@@ -6,6 +6,10 @@ public class Wierzcholek {
 
     public Wierzcholek(){
 
+        waga = 0;
+        poczatek = 0;
+        koniec = 0;
+
     }
 
     public Wierzcholek(int waga, int poczatek, int koniec){
