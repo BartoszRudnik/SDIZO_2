@@ -10,7 +10,7 @@ public class Kopiec {
 
     public Kopiec() {
 
-        rozmiar = 3;
+        rozmiar = 1;
         index = 1;
         kolejka = new wierzcholekKolejka[rozmiar + 1];
 
@@ -178,9 +178,9 @@ public class Kopiec {
     public wierzcholekKolejka minKopiec() {
 
         int index = 1;
-        int min = kolejka[1].getWaga();
+        int min = Integer.MAX_VALUE;
 
-        for (int i = 2; i < getRozmiar(); i++) {
+        for (int i = 1; i < getIndex(); i++) {
             if (kolejka[i].getWaga() < min) {
                 min = kolejka[i].getWaga();
                 index = i;

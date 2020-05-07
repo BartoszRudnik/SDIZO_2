@@ -44,7 +44,7 @@ public class Prim {
 
         for(int i = 0; i < v; i++){
 
-            wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,0);
+            wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
             odwiedzane[i] = false;
             mst[i] = new wierzcholekKolejka(-1,-1);
         }
@@ -75,7 +75,7 @@ public class Prim {
                     kolejka.dodaj(wierzcholek[w.getWierzcholek()]);
 
                     mst[w.getWierzcholek()] = pomoc;
-
+                    mst[w.getWierzcholek()].setWaga(w.getWaga());
                 }
 
             }
@@ -86,8 +86,21 @@ public class Prim {
 
     public void wypiszPrim(){
 
-        for(int i = 1; i < v; i++)
-            System.out.println(i + " " + mst[i].getWierzcholek());
+        for(int i = 1; i < v; i++) {
+            int w = wWaga(mst[i].getWierzcholek(),i);
+            System.out.println(i + " " + mst[i].getWierzcholek() + "  Waga: " + w);
+        }
+
+    }
+
+    private int wWaga(int a, int b){
+
+        for(int i = 0; i < lista[a].size(); i++){
+            if(lista[a].get(i).getWierzcholek() == b)
+                return lista[a].get(i).getWaga();
+        }
+
+        return -1;
 
     }
 
