@@ -16,6 +16,13 @@ public class Wierzcholek {
 
     }
 
+    public Wierzcholek(int waga, int poczatek){
+
+        this.waga = waga;
+        this.poczatek = poczatek;
+
+    }
+
     public int getWaga(){
         return waga;
     }

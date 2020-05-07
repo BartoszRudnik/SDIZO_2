@@ -2,7 +2,7 @@ import java.io.*;
 
 public class Kopiec {
 
-    private int[] kopiec;
+    private wierzcholekKolejka[] kolejka;
     private int index;
     private int rozmiar;
 
@@ -12,7 +12,7 @@ public class Kopiec {
 
         rozmiar = 3;
         index = 1;
-        kopiec = new int[rozmiar + 1];
+        kolejka = new wierzcholekKolejka[rozmiar + 1];
 
     }
 
@@ -58,21 +58,26 @@ public class Kopiec {
         int p = indexPDziecko(pozycja);
         int max;
 
-        if (l < getRozmiar() && kopiec[l] > kopiec[pozycja]) {
+        if (l < getRozmiar() && kolejka[l].getWaga() > kolejka[pozycja].getWaga()) {
             max = l;
         } else
             max = pozycja;
 
-        if (p < getRozmiar() && kopiec[p] > kopiec[max]) {
+        if (p < getRozmiar() && kolejka[p].getWaga() > kolejka[max].getWaga()) {
             max = p;
         }
 
         if (max != pozycja) {
-            int pomoc;
-            pomoc = kopiec[pozycja];
-            kopiec[pozycja] = kopiec[max];
-            kopiec[max] = pomoc;
+
+            wierzcholekKolejka pomoc;
+
+            pomoc = kolejka[pozycja];
+
+            kolejka[pozycja] = kolejka[max];
+            kolejka[max] = pomoc;
+
             kopcuj(max);
+
         }
 
     }
@@ -86,21 +91,21 @@ public class Kopiec {
 
     }
 
-    public void dodaj(int liczba) {
+    public void dodaj(wierzcholekKolejka wierzcholek) {
 
         if (getIndex() >= getRozmiar()) {
             powiekszKopiec();
         }
 
-        kopiec[index] = liczba;
+        kolejka[index] = wierzcholek;
         zwiekszIndex();
         budujKopiec();
 
     }
 
-    public void usun(int liczba) {
+    public void usun(wierzcholekKolejka wierzcholek) {
 
-        zmniejszKopiec(liczba);
+        zmniejszKopiec(wierzcholek);
         if (sprawdz == true)
             zmniejszIndex();
         budujKopiec();
@@ -109,7 +114,7 @@ public class Kopiec {
 
     public void usunKorzen() {
 
-        zmniejszKopiec(kopiec[1]);
+        zmniejszKopiec(kolejka[1]);
         zmniejszIndex();
         budujKopiec();
 
@@ -118,44 +123,44 @@ public class Kopiec {
     public void wyswietlKopiec() {
 
         for (int i = 1; i < getRozmiar(); i++) {
-            System.out.println(kopiec[i]);
+            System.out.println(kolejka[i]);
         }
 
     }
 
     private void powiekszKopiec() {
 
-        int pomocnicza[] = new int[getRozmiar() + 1];
+        wierzcholekKolejka pomocnicza[] = new wierzcholekKolejka[getRozmiar() + 1];
 
         for (int i = 1; i < getRozmiar(); i++) {
 
-            pomocnicza[i] = kopiec[i];
+            pomocnicza[i] = kolejka[i];
 
         }
 
         setRozmiar(getRozmiar() + 1);
 
-        kopiec = pomocnicza;
+        kolejka = pomocnicza;
 
     }
 
-    private void zmniejszKopiec(int liczba) {
+    private void zmniejszKopiec(wierzcholekKolejka wierzcholek) {
 
-        int pomocnicza[] = new int[getRozmiar() - 1];
+        wierzcholekKolejka pomocnicza[] = new wierzcholekKolejka[getRozmiar() - 1];
         sprawdz = false;
 
         for (int i = 1; i < getRozmiar(); i++) {
 
-            if (kopiec[i] == liczba) {
+            if (kolejka[i] == wierzcholek) {
 
                 sprawdz = true;
 
                 for (int j = 1; j < i; j++) {
-                    pomocnicza[j] = kopiec[j];
+                    pomocnicza[j] = kolejka[j];
                 }
 
                 for (int k = (i + 1); k < getRozmiar(); k++) {
-                    pomocnicza[k - 1] = kopiec[k];
+                    pomocnicza[k - 1] = kolejka[k];
                 }
 
             }
@@ -164,134 +169,25 @@ public class Kopiec {
 
         if (sprawdz == true) {
             setRozmiar(getRozmiar() - 1);
-            kopiec = pomocnicza;
+            kolejka = pomocnicza;
         } else
             return;
 
     }
 
-    public void znajdzKopiec(int liczba) {
+    public wierzcholekKolejka minKopiec() {
 
-        boolean sprawdz = false;
-
-        int i = 1;
-
-        while (i < getRozmiar()) {
-
-            if (kopiec[i] == liczba)
-                sprawdz = true;
-            i++;
-
-        }
-
-        if (sprawdz)
-            System.out.println("Podana liczba znajduje sie w kopcu");
-        else
-            System.out.println("Podana liczba nie znajduje sie w kopcu");
-
-    }
-
-    public boolean sprawdz(int liczba) {
-
-        int i = 1;
-
-        while (i < getRozmiar()) {
-
-            if (kopiec[i] == liczba)
-                return true;
-
-            i++;
-
-        }
-
-        return false;
-
-    }
-
-    public void zapiszKopiec(String nazwaPliku) {
-
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(nazwaPliku));
-
-            bw.write(Integer.toString(getRozmiar() - 1));
-            bw.newLine();
-
-            for (int i = 1; i < getRozmiar(); i++) {
-                bw.write(Integer.toString(kopiec[i]));
-                bw.newLine();
-            }
-
-            bw.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void wczytajKopiec(String nazwaPliku) {
-
-        try {
-            FileInputStream fstream = new FileInputStream(nazwaPliku);
-            BufferedReader br = new BufferedReader((new InputStreamReader(fstream)));
-
-            String line;
-            int rozmiarPliku = 0;
-
-            if ((line = br.readLine()) != null) {
-                rozmiarPliku = Integer.parseInt(line);
-            }
-
-            for (int i = 1; i <= rozmiarPliku; i++) {
-                if ((line = br.readLine()) != null)
-                    dodaj(Integer.parseInt(line));
-            }
-
-            fstream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void maxKopiec() {
-        System.out.println(kopiec[1]);
-    }
-
-    public void minKopiec() {
-
-        int min = kopiec[1];
+        int index = 1;
+        int min = kolejka[1].getWaga();
 
         for (int i = 2; i < getRozmiar(); i++) {
-            if (kopiec[i] < min)
-                min = kopiec[i];
+            if (kolejka[i].getWaga() < min) {
+                min = kolejka[i].getWaga();
+                index = i;
+            }
         }
 
-        System.out.println(min);
-
-    }
-
-    public void wydrukuj(int v, String przerwa, boolean l) {
-
-        if (v < rozmiar && v > 0) {
-
-            System.out.print(przerwa);
-            if (v > 1 && l == true) {
-                System.out.print("P----");
-                przerwa += "    ";
-            } else if (v > 1) {
-                System.out.print("L----");
-                przerwa += "    ";
-            } else
-                przerwa += "    ";
-
-            System.out.println(kopiec[v]);
-            wydrukuj(indexLDziecko(v), przerwa, false);
-            wydrukuj(indexPDziecko(v), przerwa, true);
-
-        }
-
+        return kolejka[index];
 
     }
 
