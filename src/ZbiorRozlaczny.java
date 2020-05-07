@@ -3,7 +3,22 @@ public class ZbiorRozlaczny {
     private ZrWezel[] zrWezel;
 
     public ZbiorRozlaczny(int rozmiar){
+
         zrWezel = new ZrWezel[rozmiar];
+        wyczysc(zrWezel);
+
+    }
+
+    public ZbiorRozlaczny(){
+
+    }
+
+    private void wyczysc(ZrWezel[] zr){
+
+        for(int i = 0; i < zr.length; i++){
+            zr[i] = new ZrWezel();
+        }
+
     }
 
     public int FindSet(int v){
@@ -32,18 +47,19 @@ public class ZbiorRozlaczny {
 
             if(zrWezel[p1].getWaga() > zrWezel[p2].getWaga())
                 zrWezel[p2].setRodzic(p1);
+
             else{
 
-             zrWezel[p1].setRodzic(p2);
+                zrWezel[p1].setRodzic(p2);
 
-             if(zrWezel[p1].getWaga() == zrWezel[p2].getWaga()){
+                if(zrWezel[p1].getWaga() == zrWezel[p2].getWaga()){
 
-                 int waga = zrWezel[p2].getWaga();
-                 waga++;
+                    int waga = zrWezel[p2].getWaga();
+                    waga++;
 
-                 zrWezel[p2].setWaga(waga);
+                    zrWezel[p2].setWaga(waga);
 
-             }
+                }
 
             }
 

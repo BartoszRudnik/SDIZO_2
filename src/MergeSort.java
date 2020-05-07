@@ -79,7 +79,7 @@ public class MergeSort {
     public void Sortuj(Wierzcholek[] wierzcholek){
 
         int p = 0;
-        int r = wierzcholek.length - 1;
+        int r = wierzcholek.length  - 1;
 
         Sort(wierzcholek, p, r);
 

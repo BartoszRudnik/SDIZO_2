@@ -10,6 +10,10 @@ public class ZrWezel {
 
     }
 
+    public ZrWezel(){
+
+    }
+
     public void setRodzic(int rodzic){
         this.rodzic = rodzic;
     }
