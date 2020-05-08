@@ -56,27 +56,27 @@ public class Kopiec {
 
         int l = indexLDziecko(pozycja);
         int p = indexPDziecko(pozycja);
-        int max;
+        int min;
 
-        if (l < getRozmiar() && kolejka[l].getWaga() > kolejka[pozycja].getWaga()) {
-            max = l;
+        if (l < getRozmiar() && kolejka[l].getWaga() < kolejka[pozycja].getWaga()) {
+            min = l;
         } else
-            max = pozycja;
+            min = pozycja;
 
-        if (p < getRozmiar() && kolejka[p].getWaga() > kolejka[max].getWaga()) {
-            max = p;
+        if (p < getRozmiar() && kolejka[p].getWaga() < kolejka[min].getWaga()) {
+            min = p;
         }
 
-        if (max != pozycja) {
+        if (min != pozycja) {
 
             wierzcholekKolejka pomoc;
 
             pomoc = kolejka[pozycja];
 
-            kolejka[pozycja] = kolejka[max];
-            kolejka[max] = pomoc;
+            kolejka[pozycja] = kolejka[min];
+            kolejka[min] = pomoc;
 
-            kopcuj(max);
+            kopcuj(min);
 
         }
 
@@ -117,6 +117,12 @@ public class Kopiec {
         zmniejszKopiec(kolejka[1]);
         zmniejszIndex();
         budujKopiec();
+
+    }
+
+    public wierzcholekKolejka minWierzcholek(){
+
+        return kolejka[1];
 
     }
 
@@ -172,22 +178,6 @@ public class Kopiec {
             kolejka = pomocnicza;
         } else
             return;
-
-    }
-
-    public wierzcholekKolejka minKopiec() {
-
-        int index = 1;
-        int min = Integer.MAX_VALUE;
-
-        for (int i = 1; i < getIndex(); i++) {
-            if (kolejka[i].getWaga() < min) {
-                min = kolejka[i].getWaga();
-                index = i;
-            }
-        }
-
-        return kolejka[index];
 
     }
 

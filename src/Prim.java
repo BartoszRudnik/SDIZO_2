@@ -61,8 +61,8 @@ public class Prim {
 
         while(kolejka.getRozmiar() > 1){
 
-            wierzcholekKolejka pomoc = kolejka.minKopiec();
-            kolejka.usun(pomoc);
+            wierzcholekKolejka pomoc = kolejka.minWierzcholek();
+            kolejka.usunKorzen();
 
             odwiedzane[pomoc.getWierzcholek()] = true;
 

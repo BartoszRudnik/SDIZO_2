@@ -38,9 +38,9 @@ public class ZbiorRozlaczny {
 
     }
 
-    public void UnionSet(Wierzcholek w){
+    public void UnionSet(wierzcholekKolejka w){
 
-        int p1 = FindSet(w.getPoczatek());
+        int p1 = FindSet(w.getWierzcholek());
         int p2 = FindSet(w.getKoniec());
 
         if(p1 != p2){
