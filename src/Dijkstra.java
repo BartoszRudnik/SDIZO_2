@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Prim {
+public class Dijkstra {
 
     private int v;
 
@@ -8,20 +8,18 @@ public class Prim {
     private ArrayList<wierzcholekKolejka>[] lista;
     private Boolean[] odwiedzane;
     private Kopiec kolejka = new Kopiec();
-    private wierzcholekKolejka[] mst;
 
-    public Prim(){
+    public Dijkstra(){
 
     }
 
-    public Prim(int v){
+    public Dijkstra(int v){
 
         this.v = v;
 
         wierzcholek = new wierzcholekKolejka[v];
         lista = new ArrayList[v];
         odwiedzane = new Boolean[v];
-        mst = new wierzcholekKolejka[v];
 
         for(int i = 0; i < v; i++)
             lista[i] = new ArrayList<>();
@@ -32,11 +30,9 @@ public class Prim {
 
     public void dodajKrawedz(int waga, int poczatek, int koniec){
 
-        wierzcholekKolejka w1 = new wierzcholekKolejka(waga,poczatek);
-        wierzcholekKolejka w2 = new wierzcholekKolejka(waga,koniec);
+        wierzcholekKolejka w1 = new wierzcholekKolejka(waga,koniec);
 
-        lista[poczatek].add(w2);
-        lista[koniec].add(w1);
+        lista[poczatek].add(w1);
 
     }
 
@@ -46,12 +42,12 @@ public class Prim {
 
             wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
             odwiedzane[i] = false;
-            mst[i] = new wierzcholekKolejka(-1,-1);
+
         }
 
     }
 
-    public void AlgorytmPrima(){
+    public void AlgorytmDijkstra(){
 
         odwiedzane[0] = true;
         wierzcholek[0].setWaga(0);
@@ -68,13 +64,12 @@ public class Prim {
 
             for(wierzcholekKolejka w : lista[pomoc.getWierzcholek()]){
 
-                if(odwiedzane[w.getWierzcholek()] == false && wierzcholek[w.getWierzcholek()].getWaga() > w.getWaga()){
+                if(odwiedzane[w.getWierzcholek()] == false && wierzcholek[pomoc.getWierzcholek()].getWaga() != Integer.MAX_VALUE && wierzcholek[w.getWierzcholek()].getWaga() > wierzcholek[pomoc.getWierzcholek()].getWaga() + w.getWaga()){
 
                     kolejka.usun(wierzcholek[w.getWierzcholek()]);
-                    wierzcholek[w.getWierzcholek()].setWaga(w.getWaga());
+                    wierzcholek[w.getWierzcholek()].setWaga(pomoc.getWaga() + w.getWaga());
                     kolejka.dodaj(wierzcholek[w.getWierzcholek()]);
 
-                    mst[w.getWierzcholek()] = pomoc;
 
                 }
 
@@ -84,23 +79,11 @@ public class Prim {
 
     }
 
-    public void wypiszPrim(){
+    public void wypisz(){
 
-        for(int i = 1; i < v; i++) {
-            int w = wWaga(mst[i].getWierzcholek(),i);
-            System.out.println(i + " " + mst[i].getWierzcholek() + "  Waga: " + w);
+        for(int i = 0; i < v; i++){
+            System.out.println(i + " " + wierzcholek[i].getWaga());
         }
-
-    }
-
-    private int wWaga(int a, int b){
-
-        for(int i = 0; i < lista[a].size(); i++){
-            if(lista[a].get(i).getWierzcholek() == b)
-                return lista[a].get(i).getWaga();
-        }
-
-        return -1;
 
     }
 
