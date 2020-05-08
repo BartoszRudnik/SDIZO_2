@@ -47,6 +47,18 @@ public class Dijkstra {
 
     }
 
+    private void relax(wierzcholekKolejka u, wierzcholekKolejka adj){
+
+        if(odwiedzane[adj.getWierzcholek()] == false && wierzcholek[adj.getWierzcholek()].getWaga() > wierzcholek[u.getWierzcholek()].getWaga() + adj.getWaga()){
+
+            kolejka.usun(wierzcholek[adj.getWierzcholek()]);
+            wierzcholek[adj.getWierzcholek()].setWaga(u.getWaga() + adj.getWaga());
+            kolejka.dodaj(wierzcholek[adj.getWierzcholek()]);
+
+        }
+
+    }
+
     public void AlgorytmDijkstra(){
 
         odwiedzane[0] = true;
@@ -62,18 +74,8 @@ public class Dijkstra {
 
             odwiedzane[pomoc.getWierzcholek()] = true;
 
-            for(wierzcholekKolejka w : lista[pomoc.getWierzcholek()]){
-
-                if(odwiedzane[w.getWierzcholek()] == false && wierzcholek[pomoc.getWierzcholek()].getWaga() != Integer.MAX_VALUE && wierzcholek[w.getWierzcholek()].getWaga() > wierzcholek[pomoc.getWierzcholek()].getWaga() + w.getWaga()){
-
-                    kolejka.usun(wierzcholek[w.getWierzcholek()]);
-                    wierzcholek[w.getWierzcholek()].setWaga(pomoc.getWaga() + w.getWaga());
-                    kolejka.dodaj(wierzcholek[w.getWierzcholek()]);
-
-
-                }
-
-            }
+            for(wierzcholekKolejka w : lista[pomoc.getWierzcholek()])
+                relax(pomoc,w);
 
         }
 
