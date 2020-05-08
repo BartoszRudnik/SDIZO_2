@@ -1,12 +1,12 @@
 public class MergeSort {
 
-    private void Merge(Wierzcholek[] wierzcholek, int p, int q, int r){
+    private void Merge(wierzcholekKolejka[] wierzcholek, int p, int q, int r){
 
         int tab1_size = q - p + 1;
         int tab2_size = r - q;
 
-        Wierzcholek[] tab1 = new Wierzcholek[tab1_size];
-        Wierzcholek[] tab2 = new Wierzcholek[tab2_size];
+        wierzcholekKolejka[] tab1 = new wierzcholekKolejka[tab1_size];
+        wierzcholekKolejka[] tab2 = new wierzcholekKolejka[tab2_size];
 
         for(int i = 0; i < tab1_size; i++)
             tab1[i] = wierzcholek[p + i];
@@ -62,7 +62,7 @@ public class MergeSort {
 
     }
 
-    private void Sort(Wierzcholek[] wierzcholek, int p, int r){
+    private void Sort(wierzcholekKolejka[] wierzcholek, int p, int r){
 
         if(p < r) {
 
@@ -76,7 +76,7 @@ public class MergeSort {
 
     }
 
-    public void Sortuj(Wierzcholek[] wierzcholek){
+    public void Sortuj(wierzcholekKolejka[] wierzcholek){
 
         int p = 0;
         int r = wierzcholek.length  - 1;
@@ -84,6 +84,5 @@ public class MergeSort {
         Sort(wierzcholek, p, r);
 
     }
-
 
 }
