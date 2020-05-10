@@ -6,6 +6,10 @@ public class wierzcholekKolejka {
 
     public wierzcholekKolejka(){
 
+        waga = 0;
+        wierzcholek = 0;
+        koniec = 0;
+
     }
 
     public wierzcholekKolejka(int waga, int wierzcholek){
