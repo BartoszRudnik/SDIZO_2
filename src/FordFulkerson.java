@@ -39,13 +39,13 @@ public class FordFulkerson {
             int u = lista.get(0);
             lista.remove(0);
 
-            for (int i = 0; i < residual[u].size(); i++) {
+            for (int i = 0; i < v; i++) {
 
-                if (residual[u].get(i).getWaga() > 0 && odwiedzone[residual[u].get(i).getKoniec()] == false) {
+                if (residual[u].get(i).getWaga() > 0 && odwiedzone[i] == false) {
 
-                    lista.add(residual[u].get(i).getKoniec());
+                    lista.add(i);
                     sciezka[i] = u;
-                    odwiedzone[residual[u].get(i).getKoniec()] = true;
+                    odwiedzone[i] = true;
 
                 }
 
@@ -64,7 +64,7 @@ public class FordFulkerson {
 
         wierzcholekKolejka w = new wierzcholekKolejka(waga,poczatek,koniec);
 
-        residual[poczatek].add(w);
+        residual[poczatek].add(koniec,w);
 
     }
 
@@ -75,59 +75,56 @@ public class FordFulkerson {
 
 
         for(int i = 0; i < v; i++){
-            residual[i].add(new wierzcholekKolejka(0,i));
+            for(int j = 0; j < v; j++){
+                residual[i].add(new wierzcholekKolejka());
+            }
         }
 
     }
 
     public int AlgorytmFF(int s, int t){
 
-        for(int i = 0; i < v; i++){
-
-            for(int j = residual[i].size(); j < v; j++)
-                residual[i].add(j,new wierzcholekKolejka());
-
-        }
-
         int wynik = 0;
         sciezka = new int[v];
 
-        while(dfs(s,t) == true){
+        while(dfs(s, t) == true){
 
-            int maks_przeplyw = Integer.MAX_VALUE;
-            int t1 = t;
+            int przeplyw = Integer.MAX_VALUE;
 
-            while(t1 != s){
+            int tmp1 = t;
+            int tmp2;
 
-                int tmp = sciezka[t1];
+            while(tmp1 != s){
 
-                if(maks_przeplyw > residual[tmp].get(t1).getWaga())
-                    maks_przeplyw = residual[tmp].get(t1).getWaga();
+                tmp2 = sciezka[tmp1];
 
-                t1 = tmp;
+                if(przeplyw > residual[tmp2].get(tmp1).getWaga())
+                    przeplyw = residual[tmp2].get(tmp1).getWaga();
 
-            }
-
-            t1 = t;
-
-            while(t1 != s){
-
-                int tmp = sciezka[t1];
-
-                int waga1 = residual[tmp].get(t1).getWaga();
-                int waga2 = residual[t1].get(tmp).getWaga();
-
-                waga1 -= maks_przeplyw;
-                waga2 += maks_przeplyw;
-
-                residual[tmp].get(t1).setWaga(waga1);
-                residual[t1].get(tmp).setWaga(waga2);
-
-                t1 = tmp;
+                tmp1 = tmp2;
 
             }
 
-            wynik += maks_przeplyw;
+            tmp1 = t;
+
+            while(tmp1 != s){
+
+                tmp2 = sciezka[tmp1];
+
+                int waga1 = residual[tmp2].get(tmp1).getWaga();
+                int waga2 = residual[tmp1].get(tmp2).getWaga();
+
+                waga1 -= przeplyw;
+                waga2 += przeplyw;
+
+                residual[tmp2].get(tmp1).setWaga(waga1);
+                residual[tmp1].get(tmp2).setWaga(waga2);
+
+                tmp1 = tmp2;
+
+            }
+
+            wynik += przeplyw;
 
         }
 
