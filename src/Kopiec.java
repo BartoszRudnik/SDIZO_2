@@ -10,7 +10,7 @@ public class Kopiec {
 
     public Kopiec() {
 
-        rozmiar = 1;
+        rozmiar = 3;
         index = 1;
         kolejka = new wierzcholekKolejka[rozmiar + 1];
 
@@ -129,7 +129,7 @@ public class Kopiec {
     public void wyswietlKopiec() {
 
         for (int i = 1; i < getRozmiar(); i++) {
-            System.out.println(kolejka[i]);
+            System.out.println(kolejka[i].getWierzcholek() + " " + kolejka[i].getKoniec() + " " + kolejka[i].getWaga());
         }
 
     }

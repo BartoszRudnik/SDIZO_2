@@ -1,11 +1,14 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Kruskal {
 
     private int v;
     private int e;
     private int index = 0;
-    private int pozycja = 0;
 
-    private wierzcholekKolejka[] wierzcholek;
     private wierzcholekKolejka[] mst;
     private ZbiorRozlaczny zr;
     private MergeSort sortowanie = new MergeSort();
@@ -24,18 +27,21 @@ public class Kruskal {
         this.v = v;
         this.e = e;
 
-        wierzcholek = new wierzcholekKolejka[e];
+    }
 
-        wyczysc(wierzcholek);
+    public Kruskal(){
 
     }
 
-    public void dodajWierzcholki(int waga, int poczatek, int koniec){
+    public void dodajWierzcholek(int waga, int poczatek, int koniec){
 
-        wierzcholek[pozycja].setWaga(waga);
-        wierzcholek[pozycja].setWierzcholek(poczatek);
-        wierzcholek[pozycja].setKoniec(koniec);
-        pozycja++;
+        wierzcholekKolejka wierzcholek = new wierzcholekKolejka();
+
+        wierzcholek.setWaga(waga);
+        wierzcholek.setWierzcholek(poczatek);
+        wierzcholek.setKoniec(koniec);
+
+        kolejka.dodaj(wierzcholek);
 
     }
 
@@ -47,9 +53,6 @@ public class Kruskal {
         index = 0;
 
         wyczysc(mst);
-
-        for(int i = 0; i < e; i++)
-            kolejka.dodaj(wierzcholek[i]);
 
         for(int i = 0; i < v; i++)
             zr.MakeSet(i);
@@ -79,6 +82,43 @@ public class Kruskal {
         for(int i = 0; i < index; i++){
             System.out.println("Waga: " + mst[i].getWaga() + " Poczatek: " + mst[i].getWierzcholek() + " Koniec: " + mst[i].getKoniec());
         }
+
+    }
+
+    public void wczytajKruskal(String nazwaPliku){
+
+        try{
+
+            FileInputStream fstream = new FileInputStream(nazwaPliku);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+            String line = br.readLine();
+            String[] str = line.trim().split("\\s+");
+
+             int v1 = Integer.parseInt(str[0]);
+             int e1 = Integer.parseInt(str[1]);
+
+             this.v = v1;
+             this.e = e1;
+
+             for (int i = 0; i < e; i++){
+
+                 line = br.readLine();
+                 String[] st = line.trim().split("\\s+");
+
+                 dodajWierzcholek(Integer.parseInt(st[2]), Integer.parseInt(st[0]), Integer.parseInt(st[1]));
+
+             }
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void test(){
+
+        kolejka.wyswietlKopiec();
 
     }
 
