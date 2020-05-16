@@ -110,6 +110,8 @@ public class Kruskal {
 
              }
 
+             fstream.close();
+
         }catch (IOException e){
             e.printStackTrace();
         }

@@ -1,8 +1,13 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Dijkstra {
 
     private int v;
+    private int e;
 
     private wierzcholekKolejka[] wierzcholek;
     private ArrayList<wierzcholekKolejka>[] lista;
@@ -13,22 +18,16 @@ public class Dijkstra {
 
     }
 
-    public Dijkstra(int v){
+    public Dijkstra(int v, int e){
 
         this.v = v;
-
-        wierzcholek = new wierzcholekKolejka[v];
-        lista = new ArrayList[v];
-        odwiedzane = new Boolean[v];
-
-        for(int i = 0; i < v; i++)
-            lista[i] = new ArrayList<>();
+        this.e = e;
 
         ustaw();
 
     }
 
-    public void dodajKrawedz(int waga, int poczatek, int koniec){
+    public void dodajKrawedz(int poczatek, int koniec, int waga){
 
         wierzcholekKolejka w1 = new wierzcholekKolejka(waga,koniec);
 
@@ -38,7 +37,15 @@ public class Dijkstra {
 
     private void ustaw(){
 
-        for(int i = 0; i < v; i++){
+        wierzcholek = new wierzcholekKolejka[e];
+        lista = new ArrayList[e];
+        odwiedzane = new Boolean[e];
+
+        for(int i = 0; i < e; i++)
+            lista[i] = new ArrayList<>();
+
+
+        for(int i = 0; i < e; i++){
 
             wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
             odwiedzane[i] = false;
@@ -64,7 +71,7 @@ public class Dijkstra {
         odwiedzane[0] = true;
         wierzcholek[0].setWaga(0);
 
-        for(int i = 0; i < v; i++)
+        for(int i = 0; i < e; i++)
             kolejka.dodaj(wierzcholek[i]);
 
         while(kolejka.getRozmiar() > 1){
@@ -85,6 +92,41 @@ public class Dijkstra {
 
         for(int i = 0; i < v; i++){
             System.out.println(i + " " + wierzcholek[i].getWaga());
+        }
+
+    }
+
+    public void wczytajDijkstra(String nazwaPliku){
+
+        try{
+
+            FileInputStream fstream = new FileInputStream(nazwaPliku);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+            String line = br.readLine();
+            String[] str = line.trim().split("\\s+");
+
+            int v1 = Integer.parseInt(str[0]);
+            int e1 = Integer.parseInt(str[1]);
+
+            this.v = v1;
+            this.e = e1;
+
+            ustaw();
+
+            for (int i = 0; i < e; i++){
+
+                line = br.readLine();
+                String[] st = line.trim().split("\\s+");
+
+                dodajKrawedz(Integer.parseInt(st[0]), Integer.parseInt(st[1]), Integer.parseInt(st[2]));
+
+            }
+
+            fstream.close();
+
+        }catch (IOException e){
+            e.printStackTrace();
         }
 
     }
