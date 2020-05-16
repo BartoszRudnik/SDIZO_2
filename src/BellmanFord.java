@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class BellmanFord {
 
     private int v;
@@ -13,14 +18,18 @@ public class BellmanFord {
         this.v = v;
         this.e = e;
 
-        wierzcholek = new wierzcholekKolejka[e];
-        wynik = new wierzcholekKolejka[v];
-
         ustaw();
 
     }
 
+    public BellmanFord(){
+
+    }
+
     private void ustaw(){
+
+        wierzcholek = new wierzcholekKolejka[e];
+        wynik = new wierzcholekKolejka[v];
 
         for(int i = 0; i < v; i++){
             wynik[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
@@ -32,7 +41,7 @@ public class BellmanFord {
 
     }
 
-    public void dodajKrawedz(int waga, int poczatek, int koniec){
+    public void dodajKrawedz(int poczatek, int koniec, int waga){
 
         wierzcholek[pozycja].setWaga(waga);
         wierzcholek[pozycja].setWierzcholek(poczatek);
@@ -77,5 +86,39 @@ public class BellmanFord {
 
     }
 
+    public void wczytajBF(String nazwaPliku){
+
+        try{
+
+            FileInputStream fstream = new FileInputStream(nazwaPliku);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+            String line = br.readLine();
+            String[] str = line.trim().split("\\s+");
+
+            int v1 = Integer.parseInt(str[0]);
+            int e1 = Integer.parseInt(str[1]);
+
+            v = v1;
+            e = e1;
+
+            ustaw();
+
+            for (int i = 0; i < e; i++){
+
+                line = br.readLine();
+                String[] st = line.trim().split("\\s+");
+
+                dodajKrawedz(Integer.parseInt(st[0]), Integer.parseInt(st[1]), Integer.parseInt(st[2]));
+
+            }
+
+            fstream.close();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
 
 }

@@ -2,11 +2,9 @@ public class main {
 
     public static void main(String args[]) {
 
-        /*
-            Zrobic obsluge tekstow dla:
-            - Bellmana-Forda
-            - Forda-Fulkersona
-         */
+        FordFulkerson ff = new FordFulkerson();
+        ff.wczytajFF("wejscie.txt");
+        ff.AlgorytmFF(0,3);
 
     }
 

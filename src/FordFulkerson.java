@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class FordFulkerson {
@@ -15,10 +19,11 @@ public class FordFulkerson {
         this.v = v;
         this.e = e;
 
-        residual = new ArrayList[v];
-        sciezka = new int[v];
-
         ustaw();
+
+    }
+
+    public FordFulkerson(){
 
     }
 
@@ -60,7 +65,7 @@ public class FordFulkerson {
 
     }
 
-    public void dodajKrawedz(int waga, int poczatek, int koniec){
+    public void dodajKrawedz(int poczatek, int koniec, int waga){
 
         wierzcholekKolejka w = new wierzcholekKolejka(waga,poczatek,koniec);
 
@@ -70,22 +75,25 @@ public class FordFulkerson {
 
     private void ustaw(){
 
-        for(int i = 0; i < v; i++)
+        residual = new ArrayList[e];
+        sciezka = new int[e];
+
+        for(int i = 0; i < e; i++)
             residual[i] = new ArrayList<>();
 
 
-        for(int i = 0; i < v; i++){
-            for(int j = 0; j < v; j++){
+        for(int i = 0; i < e; i++){
+            for(int j = 0; j < e; j++){
                 residual[i].add(new wierzcholekKolejka());
             }
         }
 
     }
 
-    public int AlgorytmFF(int s, int t){
+    public void AlgorytmFF(int s, int t){
 
         int wynik = 0;
-        sciezka = new int[v];
+        sciezka = new int[e];
 
         while(dfs(s, t) == true){
 
@@ -128,7 +136,42 @@ public class FordFulkerson {
 
         }
 
-        return wynik;
+        System.out.println("Maksymalny przeplyw z wierzcholka " + s + " do wierzcholka " + t + " wynosi: " + wynik);
+
+    }
+
+    public void wczytajFF(String nazwaPliku){
+
+        try{
+
+            FileInputStream fstream = new FileInputStream(nazwaPliku);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+            String line = br.readLine();
+            String[] str = line.trim().split("\\s+");
+
+            int v1 = Integer.parseInt(str[0]);
+            int e1 = Integer.parseInt(str[1]);
+
+            v = v1;
+            e = e1;
+
+            ustaw();
+
+            for (int i = 0; i < e; i++){
+
+                line = br.readLine();
+                String[] st = line.trim().split("\\s+");
+
+                dodajKrawedz(Integer.parseInt(st[0]), Integer.parseInt(st[1]), Integer.parseInt(st[2]));
+
+            }
+
+            fstream.close();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
     }
 
