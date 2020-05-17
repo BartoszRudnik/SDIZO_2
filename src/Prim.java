@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Prim {
 
@@ -17,6 +18,7 @@ public class Prim {
     private Kopiec kolejka = new Kopiec();
     private wierzcholekKolejka[] mst;
     private wierzcholekKolejka[] wszystkie;
+    private Boolean[][] losowe;
 
     public Prim(){
 
@@ -50,14 +52,28 @@ public class Prim {
     private void ustaw(){
 
         wierzcholek = new wierzcholekKolejka[e];
-        lista = new ArrayList[e];
+        lista = new ArrayList[v];
         odwiedzane = new Boolean[e];
         mst = new wierzcholekKolejka[v];
         wszystkie = new wierzcholekKolejka[e];
+        losowe = new Boolean[v][v];
+
+        index = 0;
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < v; j++){
+
+                losowe[i][j] = false;
+
+            }
+
+        }
 
         for(int i = 0; i < v; i++){
 
             mst[i] = new wierzcholekKolejka(-1,-1);
+            lista[i] = new ArrayList<>();
 
         }
 
@@ -65,7 +81,6 @@ public class Prim {
 
             odwiedzane[i] = false;
             wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
-            lista[i] = new ArrayList<>();
             wszystkie[i] = new wierzcholekKolejka();
 
         }
@@ -74,11 +89,48 @@ public class Prim {
 
     public void wypiszKrawedzie(){
 
-        System.out.println("GRAF NIESKIEROWANY");
+        if(index != 0) {
+
+            System.out.println("GRAF NIESKIEROWANY");
+
+            for (int i = 0; i < e; i++) {
+
+                System.out.println("Poczatek: " + wszystkie[i].getWierzcholek() + " Koniec: " + wszystkie[i].getKoniec() + " Waga: " + wszystkie[i].getWaga());
+
+            }
+
+        }
+        else{
+
+            System.out.println("Graf jest aktualnie pusty");
+
+        }
+
+    }
+
+    public void losowyGraf(int liczbaWierzcholkow, int gestosc){
+
+        v = liczbaWierzcholkow;
+        e = (v * gestosc) / 100;
+
+        ustaw();
+
+        Random random = new Random();
 
         for(int i = 0; i < e; i++){
 
-            System.out.println("Poczatek: " + wszystkie[i].getWierzcholek() + " Koniec: " + wszystkie[i].getKoniec() + " Waga: " + wszystkie[i].getWaga());
+            int poczatek = random.nextInt(v);
+            int koniec = random.nextInt(v);
+            int waga = random.nextInt(100);
+
+            if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec) {
+                dodajKrawedz(poczatek, koniec, waga);
+            }
+            else
+                i--;
+
+            losowe[poczatek][koniec] = true;
+            losowe[koniec][poczatek] = true;
 
         }
 

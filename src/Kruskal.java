@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Random;
 
 public class Kruskal {
 
@@ -13,8 +14,8 @@ public class Kruskal {
     private wierzcholekKolejka[] wierzcholek;
     private wierzcholekKolejka[] mst;
     private ZbiorRozlaczny zr;
-    private MergeSort sortowanie = new MergeSort();
     private Kopiec kolejka = new Kopiec();
+    private Boolean[][] odwiedzane;
 
     private void wyczysc(wierzcholekKolejka[] w){
 
@@ -24,10 +25,26 @@ public class Kruskal {
 
     }
 
+    private void wyczysc(Boolean[][] b){
+
+        for(int i = 0; i < b.length; i++){
+
+            for(int j = 0; j < b[i].length; j++){
+
+                b[i][j] = false;
+
+            }
+
+        }
+
+    }
+
     public Kruskal(int v, int e){
 
         this.v = v;
         this.e = e;
+
+        pozycja = 0;
 
         wierzcholek = new wierzcholekKolejka[e];
 
@@ -43,6 +60,40 @@ public class Kruskal {
         wierzcholek[pozycja].setWierzcholek(poczatek);
         wierzcholek[pozycja].setKoniec(koniec);
         pozycja++;
+
+    }
+
+    public void losowyGraf(int liczbaWierzcholkow, int gestosc){
+
+        v = liczbaWierzcholkow;
+        e = (v * gestosc) / 100;
+
+        odwiedzane = new Boolean[v][v];
+        wierzcholek = new wierzcholekKolejka[e];
+
+        pozycja = 0;
+
+        wyczysc(wierzcholek);
+        wyczysc(odwiedzane);
+
+        Random random = new Random();
+
+        for(int i = 0; i < e; i++){
+
+            int poczatek = random.nextInt(v);
+            int koniec = random.nextInt(v);
+            int waga = random.nextInt(100);
+
+            if(odwiedzane[poczatek][koniec] == false && odwiedzane[koniec][poczatek] == false && poczatek != koniec) {
+                dodajWierzcholek(poczatek, koniec, waga);
+            }
+            else
+                i--;
+
+            odwiedzane[poczatek][koniec] = true;
+            odwiedzane[koniec][poczatek] = true;
+
+        }
 
     }
 
@@ -91,11 +142,21 @@ public class Kruskal {
 
     public void wypiszWszystkieKrawedzie(){
 
-        System.out.println("GRAF NIESKIEROWANY");
+        if(pozycja != 0) {
 
-        for(int i = 0; i < e; i++){
 
-            System.out.println("Poczatek: " + wierzcholek[i].getWierzcholek() + " Koniec: " + wierzcholek[i].getKoniec() + " Waga: " + wierzcholek[i].getWaga());
+            System.out.println("GRAF NIESKIEROWANY");
+
+            for (int i = 0; i < e; i++) {
+
+                System.out.println("Poczatek: " + wierzcholek[i].getWierzcholek() + " Koniec: " + wierzcholek[i].getKoniec() + " Waga: " + wierzcholek[i].getWaga());
+
+            }
+
+        }
+        else{
+
+            System.out.println("Graf jest aktualnie pusty");
 
         }
 
@@ -116,6 +177,8 @@ public class Kruskal {
 
              this.v = v1;
              this.e = e1;
+
+             pozycja = 0;
 
              wierzcholek = new wierzcholekKolejka[e];
              wyczysc(wierzcholek);

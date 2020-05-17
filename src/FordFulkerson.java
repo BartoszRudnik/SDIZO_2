@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class FordFulkerson {
 
@@ -16,6 +17,7 @@ public class FordFulkerson {
     private boolean[] odwiedzone;
     private ArrayList<Integer> lista;
     private wierzcholekKolejka[] krawedzie;
+    private Boolean[][] losowe;
 
     public FordFulkerson(int v, int e){
 
@@ -84,11 +86,20 @@ public class FordFulkerson {
 
     public void wypiszKrawedzie(){
 
-        System.out.println("GRAF SKIEROWANY");
+        if(index != 0) {
 
-        for(int i = 0; i < e; i++){
+            System.out.println("GRAF SKIEROWANY");
 
-            System.out.println("Poczatek: " + krawedzie[i].getWierzcholek() + " Koniec: " + krawedzie[i].getKoniec() + " Waga: " + krawedzie[i].getWaga());
+            for (int i = 0; i < e; i++) {
+
+                System.out.println("Poczatek: " + krawedzie[i].getWierzcholek() + " Koniec: " + krawedzie[i].getKoniec() + " Waga: " + krawedzie[i].getWaga());
+
+            }
+
+        }
+        else {
+
+            System.out.println("Graf jest aktualnie pusty");
 
         }
 
@@ -96,20 +107,62 @@ public class FordFulkerson {
 
     private void ustaw(){
 
-        residual = new ArrayList[e];
+        residual = new ArrayList[v];
         sciezka = new int[e];
         krawedzie = new wierzcholekKolejka[e];
+        losowe = new Boolean[v][v];
+
+        index  = 0;
 
         for(int i = 0; i < e; i++) {
-            residual[i] = new ArrayList<>();
+
             krawedzie[i] = new wierzcholekKolejka();
+
         }
 
+        for(int i = 0; i < v; i++){
+
+            residual[i] = new ArrayList<>();
+
+        }
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < v; j++){
+
+                residual[i].add(new wierzcholekKolejka());
+                losowe[i][j] = false;
+
+            }
+
+        }
+
+    }
+
+    public void losowyGraf(int liczbaWierzcholkow, int gestosc){
+
+        v = liczbaWierzcholkow;
+        e = (v * gestosc) / 100;
+
+        ustaw();
+
+        Random random = new Random();
 
         for(int i = 0; i < e; i++){
-            for(int j = 0; j < e; j++){
-                residual[i].add(new wierzcholekKolejka());
+
+            int poczatek = random.nextInt(v);
+            int koniec = random.nextInt(v);
+            int waga = random.nextInt(100);
+
+            if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec) {
+                dodajKrawedz(poczatek, koniec, waga);
             }
+            else
+                i--;
+
+            losowe[poczatek][koniec] = true;
+            losowe[koniec][poczatek] = true;
+
         }
 
     }

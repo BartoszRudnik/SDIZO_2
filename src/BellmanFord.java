@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Random;
 
 public class BellmanFord {
 
@@ -12,6 +13,7 @@ public class BellmanFord {
 
     private wierzcholekKolejka[] wierzcholek;
     private wierzcholekKolejka[] wynik;
+    private Boolean[][] losowe;
 
     public BellmanFord(int v, int e){
 
@@ -30,6 +32,9 @@ public class BellmanFord {
 
         wierzcholek = new wierzcholekKolejka[e];
         wynik = new wierzcholekKolejka[v];
+        losowe = new Boolean[v][v];
+
+        pozycja = 0;
 
         for(int i = 0; i < v; i++){
             wynik[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
@@ -37,6 +42,16 @@ public class BellmanFord {
 
         for(int i = 0; i < e; i++){
             wierzcholek[i] = new wierzcholekKolejka();
+        }
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < v; j++){
+
+                losowe[i][j] = false;
+
+            }
+
         }
 
     }
@@ -52,11 +67,48 @@ public class BellmanFord {
 
     public void wypiszKrawedzie(){
 
-        System.out.println("GRAF SKIEROWANY");
+        if(pozycja != 0) {
+
+            System.out.println("GRAF SKIEROWANY");
+
+            for (int i = 0; i < e; i++) {
+
+                System.out.println("Poczatek: " + wierzcholek[i].getWierzcholek() + " Koniec: " + wierzcholek[i].getKoniec() + " Waga: " + wierzcholek[i].getWaga());
+
+            }
+
+        }
+        else{
+
+            System.out.println("Graf jest aktualnie pusty");
+
+        }
+
+    }
+
+    public void losowyGraf(int liczbaWierzcholkow, int gestosc){
+
+        v = liczbaWierzcholkow;
+        e = (v * gestosc) / 100;
+
+        ustaw();
+
+        Random random = new Random();
 
         for(int i = 0; i < e; i++){
 
-            System.out.println("Poczatek: " + wierzcholek[i].getWierzcholek() + " Koniec: " + wierzcholek[i].getKoniec() + " Waga: " + wierzcholek[i].getWaga());
+            int poczatek = random.nextInt(v);
+            int koniec = random.nextInt(v);
+            int waga = random.nextInt(100);
+
+            if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec) {
+                dodajKrawedz(poczatek, koniec, waga);
+            }
+            else
+                i--;
+
+            losowe[poczatek][koniec] = true;
+            losowe[koniec][poczatek] = true;
 
         }
 

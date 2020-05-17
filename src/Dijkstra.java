@@ -3,18 +3,24 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Dijkstra {
 
     private int v;
     private int e;
 
+    private Boolean check;
+
     private wierzcholekKolejka[] wierzcholek;
     private ArrayList<wierzcholekKolejka>[] lista;
     private Boolean[] odwiedzane;
     private Kopiec kolejka = new Kopiec();
+    private Boolean[][] losowe;
 
     public Dijkstra(){
+
+        check = false;
 
     }
 
@@ -32,20 +38,58 @@ public class Dijkstra {
         wierzcholekKolejka w1 = new wierzcholekKolejka(waga,koniec);
 
         lista[poczatek].add(w1);
+        check = true;
 
     }
 
     public void wypiszKrawedzie(){
 
-        System.out.println("GRAF SKIEROWANY");
+        if(check == true) {
 
-        for(int i = 0; i < v; i++){
+            System.out.println("GRAF SKIEROWANY");
 
-            for(int j = 0; j < lista[i].size(); j++){
+            for (int i = 0; i < v; i++) {
 
-                System.out.println("Poczatek: " + i + " Koniec: " + lista[i].get(j).getWierzcholek() + " Waga: " + lista[i].get(j).getWaga());
+                for (int j = 0; j < lista[i].size(); j++) {
+
+                    System.out.println("Poczatek: " + i + " Koniec: " + lista[i].get(j).getWierzcholek() + " Waga: " + lista[i].get(j).getWaga());
+
+                }
 
             }
+
+        }
+        else{
+
+            System.out.println("Graf jest aktualnie pusty");
+
+        }
+
+    }
+
+    public void losowyGraf(int liczbaWierzcholkow, int gestosc){
+
+        v = liczbaWierzcholkow;
+        e = (v * gestosc) / 100;
+
+        ustaw();
+
+        Random random = new Random();
+
+        for(int i = 0; i < e; i++){
+
+            int poczatek = random.nextInt(v);
+            int koniec = random.nextInt(v);
+            int waga = random.nextInt(100);
+
+            if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec) {
+                dodajKrawedz(poczatek, koniec, waga);
+            }
+            else
+                i--;
+
+            losowe[poczatek][koniec] = true;
+            losowe[koniec][poczatek] = true;
 
         }
 
@@ -54,17 +98,32 @@ public class Dijkstra {
     private void ustaw(){
 
         wierzcholek = new wierzcholekKolejka[e];
-        lista = new ArrayList[e];
-        odwiedzane = new Boolean[e];
+        lista = new ArrayList[v];
+        odwiedzane = new Boolean[v];
+        losowe = new Boolean[v][v];
 
-        for(int i = 0; i < e; i++)
+        check = false;
+
+        for(int i = 0; i < v; i++) {
+
             lista[i] = new ArrayList<>();
+            odwiedzane[i] = false;
 
+        }
+
+        for(int i = 0; i < v; i++) {
+
+            for(int j = 0; j < v; j++){
+
+                losowe[i][j] = false;
+
+            }
+
+        }
 
         for(int i = 0; i < e; i++){
 
             wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
-            odwiedzane[i] = false;
 
         }
 
