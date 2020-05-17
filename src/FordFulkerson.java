@@ -9,10 +9,13 @@ public class FordFulkerson {
     private int v;
     private int e;
 
+    private int index = 0;
+
     private ArrayList<wierzcholekKolejka>[] residual;
     private int[] sciezka;
     private boolean[] odwiedzone;
     private ArrayList<Integer> lista;
+    private wierzcholekKolejka[] krawedzie;
 
     public FordFulkerson(int v, int e){
 
@@ -71,15 +74,36 @@ public class FordFulkerson {
 
         residual[poczatek].add(koniec,w);
 
+        krawedzie[index].setWierzcholek(poczatek);
+        krawedzie[index].setKoniec(koniec);
+        krawedzie[index].setWaga(waga);
+
+        index++;
+
+    }
+
+    public void wypiszKrawedzie(){
+
+        System.out.println("GRAF SKIEROWANY");
+
+        for(int i = 0; i < e; i++){
+
+            System.out.println("Poczatek: " + krawedzie[i].getWierzcholek() + " Koniec: " + krawedzie[i].getKoniec() + " Waga: " + krawedzie[i].getWaga());
+
+        }
+
     }
 
     private void ustaw(){
 
         residual = new ArrayList[e];
         sciezka = new int[e];
+        krawedzie = new wierzcholekKolejka[e];
 
-        for(int i = 0; i < e; i++)
+        for(int i = 0; i < e; i++) {
             residual[i] = new ArrayList<>();
+            krawedzie[i] = new wierzcholekKolejka();
+        }
 
 
         for(int i = 0; i < e; i++){

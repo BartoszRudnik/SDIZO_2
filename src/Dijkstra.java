@@ -35,6 +35,22 @@ public class Dijkstra {
 
     }
 
+    public void wypiszKrawedzie(){
+
+        System.out.println("GRAF SKIEROWANY");
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < lista[i].size(); j++){
+
+                System.out.println("Poczatek: " + i + " Koniec: " + lista[i].get(j).getWierzcholek() + " Waga: " + lista[i].get(j).getWaga());
+
+            }
+
+        }
+
+    }
+
     private void ustaw(){
 
         wierzcholek = new wierzcholekKolejka[e];

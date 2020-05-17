@@ -50,6 +50,18 @@ public class BellmanFord {
 
     }
 
+    public void wypiszKrawedzie(){
+
+        System.out.println("GRAF SKIEROWANY");
+
+        for(int i = 0; i < e; i++){
+
+            System.out.println("Poczatek: " + wierzcholek[i].getWierzcholek() + " Koniec: " + wierzcholek[i].getKoniec() + " Waga: " + wierzcholek[i].getWaga());
+
+        }
+
+    }
+
     public Boolean AlgorytmBF(){
 
         wynik[0].setWaga(0);
