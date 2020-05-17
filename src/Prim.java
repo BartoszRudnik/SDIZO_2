@@ -9,11 +9,14 @@ public class Prim {
     private int v;
     private int e;
 
+    private int index = 0;
+
     private wierzcholekKolejka[] wierzcholek;
     private ArrayList<wierzcholekKolejka>[] lista;
     private Boolean[] odwiedzane;
     private Kopiec kolejka = new Kopiec();
     private wierzcholekKolejka[] mst;
+    private wierzcholekKolejka[] wszystkie;
 
     public Prim(){
 
@@ -36,6 +39,12 @@ public class Prim {
         lista[poczatek].add(w2);
         lista[koniec].add(w1);
 
+        wszystkie[index].setWierzcholek(poczatek);
+        wszystkie[index].setKoniec(koniec);
+        wszystkie[index].setWaga(waga);
+
+        index++;
+
     }
 
     private void ustaw(){
@@ -44,9 +53,7 @@ public class Prim {
         lista = new ArrayList[e];
         odwiedzane = new Boolean[e];
         mst = new wierzcholekKolejka[v];
-
-        for(int i = 0; i < e; i++)
-            lista[i] = new ArrayList<>();
+        wszystkie = new wierzcholekKolejka[e];
 
         for(int i = 0; i < v; i++){
 
@@ -58,6 +65,20 @@ public class Prim {
 
             odwiedzane[i] = false;
             wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
+            lista[i] = new ArrayList<>();
+            wszystkie[i] = new wierzcholekKolejka();
+
+        }
+
+    }
+
+    public void wypiszKrawedzie(){
+
+        System.out.println("GRAF NIESKIEROWANY");
+
+        for(int i = 0; i < e; i++){
+
+            System.out.println("Poczatek: " + wszystkie[i].getWierzcholek() + " Koniec: " + wszystkie[i].getKoniec() + " Waga: " + wszystkie[i].getWaga());
 
         }
 

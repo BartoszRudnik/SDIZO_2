@@ -8,7 +8,9 @@ public class Kruskal {
     private int v;
     private int e;
     private int index = 0;
+    private int pozycja = 0;
 
+    private wierzcholekKolejka[] wierzcholek;
     private wierzcholekKolejka[] mst;
     private ZbiorRozlaczny zr;
     private MergeSort sortowanie = new MergeSort();
@@ -27,21 +29,20 @@ public class Kruskal {
         this.v = v;
         this.e = e;
 
+        wierzcholek = new wierzcholekKolejka[e];
+
     }
 
     public Kruskal(){
 
     }
 
-    public void dodajWierzcholek(int waga, int poczatek, int koniec){
+    public void dodajWierzcholek(int poczatek, int koniec, int waga){
 
-        wierzcholekKolejka wierzcholek = new wierzcholekKolejka();
-
-        wierzcholek.setWaga(waga);
-        wierzcholek.setWierzcholek(poczatek);
-        wierzcholek.setKoniec(koniec);
-
-        kolejka.dodaj(wierzcholek);
+        wierzcholek[pozycja].setWaga(waga);
+        wierzcholek[pozycja].setWierzcholek(poczatek);
+        wierzcholek[pozycja].setKoniec(koniec);
+        pozycja++;
 
     }
 
@@ -53,6 +54,9 @@ public class Kruskal {
         index = 0;
 
         wyczysc(mst);
+
+        for(int i = 0; i < e; i++)
+            kolejka.dodaj(wierzcholek[i]);
 
         for(int i = 0; i < v; i++)
             zr.MakeSet(i);
@@ -85,6 +89,18 @@ public class Kruskal {
 
     }
 
+    public void wypiszWszystkieKrawedzie(){
+
+        System.out.println("GRAF NIESKIEROWANY");
+
+        for(int i = 0; i < e; i++){
+
+            System.out.println("Poczatek: " + wierzcholek[i].getWierzcholek() + " Koniec: " + wierzcholek[i].getKoniec() + " Waga: " + wierzcholek[i].getWaga());
+
+        }
+
+    }
+
     public void wczytajKruskal(String nazwaPliku){
 
         try{
@@ -101,12 +117,15 @@ public class Kruskal {
              this.v = v1;
              this.e = e1;
 
+             wierzcholek = new wierzcholekKolejka[e];
+             wyczysc(wierzcholek);
+
              for (int i = 0; i < e; i++){
 
                  line = br.readLine();
                  String[] st = line.trim().split("\\s+");
 
-                 dodajWierzcholek(Integer.parseInt(st[2]), Integer.parseInt(st[0]), Integer.parseInt(st[1]));
+                 dodajWierzcholek(Integer.parseInt(st[0]), Integer.parseInt(st[1]), Integer.parseInt(st[2]));
 
              }
 
@@ -115,12 +134,6 @@ public class Kruskal {
         }catch (IOException e){
             e.printStackTrace();
         }
-
-    }
-
-    public void test(){
-
-        kolejka.wyswietlKopiec();
 
     }
 
