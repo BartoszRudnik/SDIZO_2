@@ -99,7 +99,7 @@ public class BellmanFord {
 
             int poczatek = random.nextInt(v);
             int koniec = random.nextInt(v);
-            int waga = random.nextInt(100);
+            int waga = random.nextInt(200) - 100;
 
             if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec) {
                 dodajKrawedz(poczatek, koniec, waga);
