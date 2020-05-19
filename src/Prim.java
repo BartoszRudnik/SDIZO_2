@@ -87,7 +87,7 @@ public class Prim {
 
     }
 
-    public void wypiszKrawedzie(){
+    public void wypiszKrawedzieLista(){
 
         if(index != 0) {
 
@@ -96,6 +96,42 @@ public class Prim {
             for (int i = 0; i < e; i++) {
 
                 System.out.println("Poczatek: " + wszystkie[i].getWierzcholek() + " Koniec: " + wszystkie[i].getKoniec() + " Waga: " + wszystkie[i].getWaga());
+
+            }
+
+        }
+        else{
+
+            System.out.println("Graf jest aktualnie pusty");
+
+        }
+
+    }
+
+    public void wypiszWszystkieKrawedzieMacierz(){
+
+        if(index > 0) {
+
+            System.out.println("GRAF NIESKIEROWANY");
+
+            int[][] macierz = new int[v][e];
+
+            for (int i = 0; i < e; i++) {
+
+                macierz[wszystkie[i].getWierzcholek()][i] = 1;
+                macierz[wszystkie[i].getKoniec()][i] = 1;
+
+            }
+
+            for (int i = 0; i < v; i++) {
+
+                for (int j = 0; j < e; j++) {
+
+                    System.out.print(macierz[i][j] + " ");
+
+                }
+
+                System.out.println();
 
             }
 

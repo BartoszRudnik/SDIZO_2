@@ -42,7 +42,7 @@ public class Dijkstra {
 
     }
 
-    public void wypiszKrawedzie(){
+    public void wypiszKrawedzieLista(){
 
         if(check == true) {
 
@@ -55,6 +55,48 @@ public class Dijkstra {
                     System.out.println("Poczatek: " + i + " Koniec: " + lista[i].get(j).getWierzcholek() + " Waga: " + lista[i].get(j).getWaga());
 
                 }
+
+            }
+
+        }
+        else{
+
+            System.out.println("Graf jest aktualnie pusty");
+
+        }
+
+    }
+
+    public void wypiszKrawedzieMacierz(){
+
+        if(check == true) {
+
+            System.out.println("GRAF SKIEROWANY");
+
+            int[][] macierz = new int[v][e];
+            int pomoc = 0;
+
+            for(int i = 0; i < v; i++){
+
+                for(int j = 0; j < lista[i].size(); j++){
+
+                    macierz[i][pomoc] = 1;
+                    macierz[lista[i].get(j).getWierzcholek()][pomoc] = -1;
+                    pomoc++;
+
+                }
+
+            }
+
+            for (int i = 0; i < v; i++) {
+
+                for (int j = 0; j < e; j++) {
+
+                    System.out.print(macierz[i][j] + "  ");
+
+                }
+
+                System.out.println();
 
             }
 

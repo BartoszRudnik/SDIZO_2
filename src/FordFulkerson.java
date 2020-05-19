@@ -105,6 +105,42 @@ public class FordFulkerson {
 
     }
 
+    public void wypiszKrawedzieMacierz(){
+
+        if(index > 0) {
+
+            System.out.println("GRAF SKIEROWANY");
+
+            int[][] macierz = new int[v][e];
+
+            for(int i = 0; i < e; i++){
+
+                macierz[krawedzie[i].getWierzcholek()][i] = 1;
+                macierz[krawedzie[i].getKoniec()][i] = -1;
+
+            }
+
+            for (int i = 0; i < v; i++) {
+
+                for (int j = 0; j < e; j++) {
+
+                    System.out.print(macierz[i][j] + "  ");
+
+                }
+
+                System.out.println();
+
+            }
+
+        }
+        else{
+
+            System.out.println("Graf jest aktualnie pusty");
+
+        }
+
+    }
+
     private void ustaw(){
 
         residual = new ArrayList[v];
