@@ -37,7 +37,7 @@ public class BellmanFord {
         pozycja = 0;
 
         for(int i = 0; i < v; i++){
-            wynik[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
+            wynik[i] = new wierzcholekKolejka(Integer.MAX_VALUE/2,i);
         }
 
         for(int i = 0; i < e; i++){
@@ -150,11 +150,39 @@ public class BellmanFord {
 
     }
 
+    public Boolean AlgorytmBF(int poczatek, int koniec){
+
+        wynik[poczatek].setWaga(0);
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < e; j++){
+
+                if(wynik[wierzcholek[j].getWierzcholek()].getWaga() + wierzcholek[j].getWaga() < wynik[wierzcholek[j].getKoniec()].getWaga()){
+                    wynik[wierzcholek[j].getKoniec()].setWaga(wynik[wierzcholek[j].getWierzcholek()].getWaga() + wierzcholek[j].getWaga());
+                }
+
+            }
+
+        }
+
+        for(int i = 0; i < e; i++){
+
+            if(wynik[wierzcholek[i].getWierzcholek()].getWaga() + wierzcholek[i].getWaga() < wynik[wierzcholek[i].getKoniec()].getWaga()){
+                return false;
+            }
+
+        }
+
+        return true;
+
+    }
+
     public Boolean AlgorytmBF(){
 
         wynik[0].setWaga(0);
 
-        for(int i = 1; i < v; i++){
+        for(int i = 0; i < v; i++){
 
             for(int j = 0; j < e; j++){
 
@@ -181,8 +209,14 @@ public class BellmanFord {
     public void wypisz(){
 
         for(int i = 0; i < v; i++){
-            System.out.println(i + " " + wynik[i].getWaga());
+            System.out.println("Wierzcholek poczatkowy: 0 " + "Wierzcholek koncowy: " + i + " Waga najkrotszej sciezki: " + wynik[i].getWaga());
         }
+
+    }
+
+    public void wypisz(int poczatek, int koniec){
+
+        System.out.println("Wierzcholek poczatkowy: " + poczatek + " Wierzcholek koncowy: " + koniec + " Waga najkrotszej sciezki: " + wynik[koniec].getWaga());
 
     }
 

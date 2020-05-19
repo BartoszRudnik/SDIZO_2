@@ -140,18 +140,11 @@ public class Dijkstra {
     private void ustaw(){
 
         wierzcholek = new wierzcholekKolejka[e];
-        lista = new ArrayList[v];
-        odwiedzane = new Boolean[v];
+        lista = new ArrayList[e];
+        odwiedzane = new Boolean[e];
         losowe = new Boolean[v][v];
 
         check = false;
-
-        for(int i = 0; i < v; i++) {
-
-            lista[i] = new ArrayList<>();
-            odwiedzane[i] = false;
-
-        }
 
         for(int i = 0; i < v; i++) {
 
@@ -166,6 +159,8 @@ public class Dijkstra {
         for(int i = 0; i < e; i++){
 
             wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
+            odwiedzane[i] = false;
+            lista[i] = new ArrayList<>();
 
         }
 
@@ -178,6 +173,28 @@ public class Dijkstra {
             kolejka.usun(wierzcholek[adj.getWierzcholek()]);
             wierzcholek[adj.getWierzcholek()].setWaga(u.getWaga() + adj.getWaga());
             kolejka.dodaj(wierzcholek[adj.getWierzcholek()]);
+
+        }
+
+    }
+
+    public void AlgorytmDijkstra(int poczatek, int  koniec){
+
+        odwiedzane[poczatek] = true;
+        wierzcholek[poczatek].setWaga(0);
+
+        for(int i = 0; i < e; i++)
+            kolejka.dodaj(wierzcholek[i]);
+
+        while(kolejka.getRozmiar() > 1 && odwiedzane[koniec] == false){
+
+            wierzcholekKolejka pomoc = kolejka.minWierzcholek();
+            kolejka.usunKorzen();
+
+            odwiedzane[pomoc.getWierzcholek()] = true;
+
+            for(wierzcholekKolejka w : lista[pomoc.getWierzcholek()])
+                relax(pomoc,w);
 
         }
 
@@ -205,11 +222,17 @@ public class Dijkstra {
 
     }
 
-    public void wypisz(){
+    public void wypiszWynik(){
 
-        for(int i = 0; i < v; i++){
-            System.out.println(i + " " + wierzcholek[i].getWaga());
+        for(int i = 1; i < v; i++){
+            System.out.println("Wierzcholek poczatkowy: 0" + " Wierzcholek koncowy: " + i + " Waga najkrotszej sciezki: " + wierzcholek[i].getWaga());
         }
+
+    }
+
+    public void wypiszWynik(int poczatek, int koniec){
+
+        System.out.println("Wierzcholek poczatkowy: " + poczatek + " Wierzcholek koncowy: "+ koniec  + " Waga najkrotszej sciezki: " + wierzcholek[koniec].getWaga());
 
     }
 
