@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class BellmanFord {
@@ -9,8 +10,9 @@ public class BellmanFord {
     private int v;
     private int e;
 
-    private int pozycja = 0;
+    private boolean check;
 
+    private ArrayList<wierzcholekKolejka>[] lista;
     private wierzcholekKolejka[] wierzcholek;
     private wierzcholekKolejka[] wynik;
     private Boolean[][] losowe;
@@ -26,6 +28,8 @@ public class BellmanFord {
 
     public BellmanFord(){
 
+        check = false;
+
     }
 
     private void ustaw(){
@@ -33,11 +37,13 @@ public class BellmanFord {
         wierzcholek = new wierzcholekKolejka[e];
         wynik = new wierzcholekKolejka[v];
         losowe = new Boolean[v][v];
+        lista = new ArrayList[v];
 
-        pozycja = 0;
+        check = false;
 
         for(int i = 0; i < v; i++){
             wynik[i] = new wierzcholekKolejka(Integer.MAX_VALUE/2,i);
+            lista[i] = new ArrayList<>();
         }
 
         for(int i = 0; i < e; i++){
@@ -58,22 +64,27 @@ public class BellmanFord {
 
     public void dodajKrawedz(int poczatek, int koniec, int waga){
 
-        wierzcholek[pozycja].setWaga(waga);
-        wierzcholek[pozycja].setWierzcholek(poczatek);
-        wierzcholek[pozycja].setKoniec(koniec);
-        pozycja++;
+        wierzcholekKolejka w = new wierzcholekKolejka(waga,poczatek,koniec);
+
+        lista[poczatek].add(w);
+
+        check = true;
 
     }
 
-    public void wypiszKrawedzie(){
+    public void wypiszKrawedzieLista(){
 
-        if(pozycja != 0) {
+        if(check == true) {
 
             System.out.println("GRAF SKIEROWANY");
 
-            for (int i = 0; i < e; i++) {
+            for (int i = 0; i < v; i++) {
 
-                System.out.println("Poczatek: " + wierzcholek[i].getWierzcholek() + " Koniec: " + wierzcholek[i].getKoniec() + " Waga: " + wierzcholek[i].getWaga());
+                for (int j = 0; j < lista[i].size(); j++) {
+
+                    System.out.println("Poczatek: " + lista[i].get(j).getWierzcholek() + " Koniec: " + lista[i].get(j).getKoniec() + " Waga: " + lista[i].get(j).getWaga());
+
+                }
 
             }
 
@@ -88,16 +99,22 @@ public class BellmanFord {
 
     public void wypiszKrawedzieMacierz(){
 
-        if(pozycja > 0) {
+        if(check == true) {
 
             System.out.println("GRAF SKIEROWANY");
 
             int[][] macierz = new int[v][e];
+            int pomoc = 0;
 
-            for(int i = 0; i < e; i++){
+            for(int i = 0; i < v; i++){
 
-                macierz[wierzcholek[i].getWierzcholek()][i] = 1;
-                macierz[wierzcholek[i].getKoniec()][i] = -1;
+                for(int j = 0; j < lista[i].size(); j++){
+
+                    macierz[i][pomoc] = 1;
+                    macierz[lista[i].get(j).getKoniec()][pomoc] = -1;
+                    pomoc++;
+
+                }
 
             }
 
@@ -156,20 +173,25 @@ public class BellmanFord {
 
         for(int i = 0; i < v; i++){
 
-            for(int j = 0; j < e; j++){
+            for(int j = 0; j < lista[i].size(); j++){
 
-                if(wynik[wierzcholek[j].getWierzcholek()].getWaga() + wierzcholek[j].getWaga() < wynik[wierzcholek[j].getKoniec()].getWaga()){
-                    wynik[wierzcholek[j].getKoniec()].setWaga(wynik[wierzcholek[j].getWierzcholek()].getWaga() + wierzcholek[j].getWaga());
+                if(wynik[lista[i].get(j).getWierzcholek()].getWaga() + lista[i].get(j).getWaga() < wynik[lista[i].get(j).getKoniec()].getWaga()){
+                    wynik[lista[i].get(j).getKoniec()].setWaga(wynik[lista[i].get(j).getWierzcholek()].getWaga() + lista[i].get(j).getWaga());
                 }
 
             }
 
         }
 
-        for(int i = 0; i < e; i++){
+        for(int i = 0; i < v; i++) {
 
-            if(wynik[wierzcholek[i].getWierzcholek()].getWaga() + wierzcholek[i].getWaga() < wynik[wierzcholek[i].getKoniec()].getWaga()){
-                return false;
+            for (int j = 0; j < lista[i].size(); j++) {
+
+                if (wynik[lista[i].get(j).getWierzcholek()].getWaga() + lista[i].get(j).getWaga() < wynik[lista[i].get(j).getKoniec()].getWaga()) {
+                    return false;
+
+                }
+
             }
 
         }
@@ -184,20 +206,25 @@ public class BellmanFord {
 
         for(int i = 0; i < v; i++){
 
-            for(int j = 0; j < e; j++){
+            for(int j = 0; j < lista[i].size(); j++){
 
-                if(wynik[wierzcholek[j].getWierzcholek()].getWaga() + wierzcholek[j].getWaga() < wynik[wierzcholek[j].getKoniec()].getWaga()){
-                    wynik[wierzcholek[j].getKoniec()].setWaga(wynik[wierzcholek[j].getWierzcholek()].getWaga() + wierzcholek[j].getWaga());
+                if(wynik[lista[i].get(j).getWierzcholek()].getWaga() + lista[i].get(j).getWaga() < wynik[lista[i].get(j).getKoniec()].getWaga()){
+                    wynik[lista[i].get(j).getKoniec()].setWaga(wynik[lista[i].get(j).getWierzcholek()].getWaga() + lista[i].get(j).getWaga());
                 }
 
             }
 
         }
 
-        for(int i = 0; i < e; i++){
+        for(int i = 0; i < v; i++) {
 
-            if(wynik[wierzcholek[i].getWierzcholek()].getWaga() + wierzcholek[i].getWaga() < wynik[wierzcholek[i].getKoniec()].getWaga()){
-                return false;
+            for (int j = 0; j < lista[i].size(); j++) {
+
+                if (wynik[lista[i].get(j).getWierzcholek()].getWaga() + lista[i].get(j).getWaga() < wynik[lista[i].get(j).getKoniec()].getWaga()) {
+                    return false;
+
+                }
+
             }
 
         }

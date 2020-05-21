@@ -10,13 +10,12 @@ public class FordFulkerson {
     private int v;
     private int e;
 
-    private int index = 0;
+    private boolean check;
 
     private ArrayList<wierzcholekKolejka>[] residual;
     private int[] sciezka;
     private boolean[] odwiedzone;
     private ArrayList<Integer> lista;
-    private wierzcholekKolejka[] krawedzie;
     private Boolean[][] losowe;
 
     public FordFulkerson(int v, int e){
@@ -65,8 +64,8 @@ public class FordFulkerson {
 
         if (odwiedzone[t] == true)
             return true;
-         else
-           return false;
+        else
+            return false;
 
     }
 
@@ -76,28 +75,29 @@ public class FordFulkerson {
 
         residual[poczatek].add(koniec,w);
 
-        krawedzie[index].setWierzcholek(poczatek);
-        krawedzie[index].setKoniec(koniec);
-        krawedzie[index].setWaga(waga);
-
-        index++;
+        check = true;
 
     }
 
-    public void wypiszKrawedzie(){
+    public void wypiszKrawedzieLista(){
 
-        if(index != 0) {
+        if(check == true) {
 
             System.out.println("GRAF SKIEROWANY");
 
-            for (int i = 0; i < e; i++) {
+            for (int i = 0; i < v; i++) {
 
-                System.out.println("Poczatek: " + krawedzie[i].getWierzcholek() + " Koniec: " + krawedzie[i].getKoniec() + " Waga: " + krawedzie[i].getWaga());
+                for (int j = 0; j < residual[i].size(); j++) {
+
+                    if(residual[i].get(j).getWierzcholek() != 0 || residual[i].get(j).getKoniec() != 0 || residual[i].get(j).getWaga() != 0)
+                        System.out.println("Poczatek: " + residual[i].get(j).getWierzcholek() + " Koniec: " + residual[i].get(j).getKoniec() + " Waga: " + residual[i].get(j).getWaga());
+
+                }
 
             }
 
         }
-        else {
+        else{
 
             System.out.println("Graf jest aktualnie pusty");
 
@@ -107,16 +107,24 @@ public class FordFulkerson {
 
     public void wypiszKrawedzieMacierz(){
 
-        if(index > 0) {
+        if(check == true) {
 
             System.out.println("GRAF SKIEROWANY");
 
             int[][] macierz = new int[v][e];
+            int pomoc = 0;
 
-            for(int i = 0; i < e; i++){
+            for(int i = 0; i < v; i++){
 
-                macierz[krawedzie[i].getWierzcholek()][i] = 1;
-                macierz[krawedzie[i].getKoniec()][i] = -1;
+                for(int j = 0; j < residual[i].size(); j++){
+
+                    if(residual[i].get(j).getWierzcholek() != 0 || residual[i].get(j).getKoniec() != 0 || residual[i].get(j).getWaga() != 0) {
+                        macierz[i][pomoc] = 1;
+                        macierz[residual[i].get(j).getKoniec()][pomoc] = -1;
+                        pomoc++;
+                    }
+
+                }
 
             }
 
@@ -145,16 +153,9 @@ public class FordFulkerson {
 
         residual = new ArrayList[v];
         sciezka = new int[e];
-        krawedzie = new wierzcholekKolejka[e];
         losowe = new Boolean[v][v];
 
-        index  = 0;
-
-        for(int i = 0; i < e; i++) {
-
-            krawedzie[i] = new wierzcholekKolejka();
-
-        }
+        check = false;
 
         for(int i = 0; i < v; i++){
 

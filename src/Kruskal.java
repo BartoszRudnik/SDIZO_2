@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Kruskal {
@@ -12,6 +13,7 @@ public class Kruskal {
     private int pozycja = 0;
 
     private wierzcholekKolejka[] wierzcholek;
+    private ArrayList<wierzcholekKolejka>[] lista;
     private wierzcholekKolejka[] mst;
     private ZbiorRozlaczny zr;
     private Kopiec kolejka = new Kopiec();
@@ -39,6 +41,17 @@ public class Kruskal {
 
     }
 
+    private void ustaw(){
+
+        wierzcholek = new wierzcholekKolejka[e];
+        lista = new ArrayList[v];
+
+        for(int i = 0; i < v; i++){
+            lista[i] = new ArrayList<>();
+        }
+
+    }
+
     public Kruskal(int v, int e){
 
         this.v = v;
@@ -46,7 +59,8 @@ public class Kruskal {
 
         pozycja = 0;
 
-        wierzcholek = new wierzcholekKolejka[e];
+        ustaw();
+        wyczysc(wierzcholek);
 
     }
 
@@ -56,9 +70,16 @@ public class Kruskal {
 
     public void dodajWierzcholek(int poczatek, int koniec, int waga){
 
+        wierzcholekKolejka w1 = new wierzcholekKolejka(waga,poczatek,koniec);
+        wierzcholekKolejka w2 = new wierzcholekKolejka(waga,koniec,poczatek);
+
+        lista[poczatek].add(w2);
+        lista[koniec].add(w1);
+
         wierzcholek[pozycja].setWaga(waga);
         wierzcholek[pozycja].setWierzcholek(poczatek);
         wierzcholek[pozycja].setKoniec(koniec);
+
         pozycja++;
 
     }
@@ -69,7 +90,8 @@ public class Kruskal {
         e = (v * gestosc) / 100;
 
         odwiedzane = new Boolean[v][v];
-        wierzcholek = new wierzcholekKolejka[e];
+
+        ustaw();
 
         pozycja = 0;
 
@@ -106,13 +128,16 @@ public class Kruskal {
 
         wyczysc(mst);
 
-        for(int i = 0; i < e; i++)
-            kolejka.dodaj(wierzcholek[i]);
+        for(int i = 0; i < v; i++) {
+            for (int j = 0; j < lista[i].size(); j++) {
+                kolejka.dodaj(lista[i].get(j));
+            }
+        }
 
         for(int i = 0; i < v; i++)
             zr.MakeSet(i);
 
-        for(int i = 0; index < v - 1; i++){
+        while(index < v - 1){
 
             pomoc = kolejka.minWierzcholek();
             kolejka.usunKorzen();
@@ -216,7 +241,7 @@ public class Kruskal {
 
              pozycja = 0;
 
-             wierzcholek = new wierzcholekKolejka[e];
+             ustaw();
              wyczysc(wierzcholek);
 
              for (int i = 0; i < e; i++){
