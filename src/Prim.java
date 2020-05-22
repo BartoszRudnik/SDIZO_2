@@ -209,7 +209,6 @@ public class Prim {
 
     }
 
-
     public void wypiszPrim(){
 
         for(int i = 1; i < v; i++) {

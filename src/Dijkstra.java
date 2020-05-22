@@ -186,7 +186,7 @@ public class Dijkstra {
         for(int i = 0; i < e; i++)
             kolejka.dodaj(wierzcholek[i]);
 
-        while(kolejka.getRozmiar() > 1 && odwiedzane[koniec] == false){
+        while(kolejka.getRozmiar() > 1){
 
             wierzcholekKolejka pomoc = kolejka.minWierzcholek();
             kolejka.usunKorzen();
@@ -195,6 +195,9 @@ public class Dijkstra {
 
             for(wierzcholekKolejka w : lista[pomoc.getWierzcholek()])
                 relax(pomoc,w);
+
+            if(odwiedzane[koniec] == true)
+                break;
 
         }
 

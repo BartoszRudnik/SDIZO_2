@@ -52,12 +52,12 @@ public class tKruskal {
                     break;
 
                 case 3:
-                    kruskal.wypiszWszystkieKrawedzieLista();
+                    kruskal.wypiszKrawedzieLista();
                     System.out.println();
                     break;
 
                 case 4:
-                    kruskal.wypiszWszystkieKrawedzieMacierz();
+                    kruskal.wypiszKrawedzieMacierz();
                     System.out.println();
                     break;
 

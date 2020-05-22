@@ -238,7 +238,7 @@ public class Kruskal {
 
     }
 
-    public void wypiszWszystkieKrawedzieLista(){
+    public void wypiszKrawedzieLista(){
 
         if(pozycja > 0) {
 
@@ -259,7 +259,7 @@ public class Kruskal {
 
     }
 
-    public void wypiszWszystkieKrawedzieMacierz(){
+    public void wypiszKrawedzieMacierz(){
 
         if(pozycja > 0) {
 
