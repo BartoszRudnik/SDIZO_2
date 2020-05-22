@@ -172,7 +172,7 @@ public class Kruskal {
         for(int i = 0; i < v; i++)
             zr.MakeSet(i);
 
-        while(index < v - 1){
+        while(kolejka.getRozmiar() > 1){
 
             pomoc = kolejka.minWierzcholek();
             kolejka.usunKorzen();

@@ -139,9 +139,9 @@ public class Dijkstra {
 
     private void ustaw(){
 
-        wierzcholek = new wierzcholekKolejka[e];
-        lista = new ArrayList[e];
-        odwiedzane = new Boolean[e];
+        wierzcholek = new wierzcholekKolejka[v];
+        lista = new ArrayList[v];
+        odwiedzane = new Boolean[v];
         losowe = new Boolean[v][v];
 
         check = false;
@@ -156,11 +156,11 @@ public class Dijkstra {
 
         }
 
-        for(int i = 0; i < e; i++){
+        for(int i = 0; i < v; i++){
 
+            lista[i] = new ArrayList<>();
             wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
             odwiedzane[i] = false;
-            lista[i] = new ArrayList<>();
 
         }
 

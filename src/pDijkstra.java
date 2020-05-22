@@ -12,7 +12,7 @@ public class pDijkstra {
 
     Scanner scanner = new Scanner(System.in);
 
-    private int iloscTestow = 100;
+    private int iloscTestow = 200;
 
     public void pomiary(){
 
@@ -39,7 +39,7 @@ public class pDijkstra {
                     break;
 
                 case 1:
-                    long[] tab = new long[100];
+                    long[] tab = new long[iloscTestow];
                     System.out.println("Podaj ilosc wierzcholkow: ");
                     v = scanner.nextInt();
                     System.out.println("Podaj gestosc: ");
@@ -64,7 +64,7 @@ public class pDijkstra {
                     break;
 
                 case 2:
-                    long[] tab2 = new long[100];
+                    long[] tab2 = new long[iloscTestow];
                     System.out.println("Podaj ilosc wierzcholkow: ");
                     v = scanner.nextInt();
                     System.out.println("Podaj gestosc: ");

@@ -12,7 +12,7 @@ public class pFordFulkerson {
 
     Scanner scanner = new Scanner(System.in);
 
-    private int iloscTestow = 100;
+    private int iloscTestow = 200;
 
     public void pomiary(){
 
@@ -39,7 +39,7 @@ public class pFordFulkerson {
                     break;
 
                 case 1:
-                    long[] tab = new long[100];
+                    long[] tab = new long[iloscTestow];
                     System.out.println("Podaj ilosc wierzcholkow: ");
                     v = scanner.nextInt();
                     System.out.println("Podaj gestosc: ");
@@ -52,11 +52,15 @@ public class pFordFulkerson {
                         int poczatek = r.nextInt(v);
                         int koniec = r.nextInt(v);
 
-                        long sTime = System.nanoTime();
-                        ff.AlgorytmFF(poczatek,koniec);
-                        long fTime = System.nanoTime();
-                        fTime -= sTime;
-                        tab[i] = fTime;
+                        if(poczatek != koniec) {
+
+                            long sTime = System.nanoTime();
+                            ff.AlgorytmFF(poczatek, koniec);
+                            long fTime = System.nanoTime();
+                            fTime -= sTime;
+                            tab[i] = fTime;
+
+                        }
 
                     }
 
@@ -64,7 +68,7 @@ public class pFordFulkerson {
                     break;
 
                 case 2:
-                    long[] tab2 = new long[100];
+                    long[] tab2 = new long[iloscTestow];
                     System.out.println("Podaj ilosc wierzcholkow: ");
                     v = scanner.nextInt();
                     System.out.println("Podaj gestosc: ");

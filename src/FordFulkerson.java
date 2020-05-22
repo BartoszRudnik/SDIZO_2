@@ -152,7 +152,7 @@ public class FordFulkerson {
     private void ustaw(){
 
         residual = new ArrayList[v];
-        sciezka = new int[e];
+        sciezka = new int[v];
         losowe = new Boolean[v][v];
 
         check = false;
@@ -207,7 +207,7 @@ public class FordFulkerson {
     public void AlgorytmFF(int s, int t){
 
         int wynik = 0;
-        sciezka = new int[e];
+        sciezka = new int[v];
 
         while(dfs(s, t) == true){
 

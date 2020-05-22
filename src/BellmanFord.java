@@ -34,7 +34,7 @@ public class BellmanFord {
 
     private void ustaw(){
 
-        wierzcholek = new wierzcholekKolejka[e];
+        wierzcholek = new wierzcholekKolejka[v];
         wynik = new wierzcholekKolejka[v];
         losowe = new Boolean[v][v];
         lista = new ArrayList[v];
@@ -42,12 +42,11 @@ public class BellmanFord {
         check = false;
 
         for(int i = 0; i < v; i++){
+
             wynik[i] = new wierzcholekKolejka(Integer.MAX_VALUE/2,i);
             lista[i] = new ArrayList<>();
-        }
-
-        for(int i = 0; i < e; i++){
             wierzcholek[i] = new wierzcholekKolejka();
+
         }
 
         for(int i = 0; i < v; i++){
