@@ -18,7 +18,7 @@ public class pFordFulkerson {
 
         while(spr){
 
-            System.out.println("Podaj numer operacji do przeprowadzenia pomiarow");
+            System.out.println("Wybierz operacje do przeprowadzenia pomiarow");
             System.out.println("1. Algorytm FordaFulkersona - wersja listowa");
             System.out.println("2. Algorytm FordaFulkersona - wersja macierzowa");
             System.out.println("0. Wyjscie");

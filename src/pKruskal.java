@@ -17,7 +17,7 @@ public class pKruskal {
 
         while(spr){
 
-            System.out.println("Podaj numer operacji do przeprowadzenia pomiarow");
+            System.out.println("Wybierz operacje do przeprowadzenia pomiarow");
             System.out.println("1. Algorytm Kruskala - wersja listowa");
             System.out.println("2. Algorytm Kruskala - wersja macierzowa");
             System.out.println("0. Wyjscie");
