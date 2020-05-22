@@ -19,6 +19,8 @@ public class Prim {
     private wierzcholekKolejka[] mst;
     private wierzcholekKolejka[] wszystkie;
     private Boolean[][] losowe;
+    private Boolean[][] odwiedzaneMacierz;
+    int[][] macierz;
 
     public Prim(){
 
@@ -41,6 +43,9 @@ public class Prim {
         lista[poczatek].add(w2);
         lista[koniec].add(w1);
 
+        macierz[poczatek][index] = waga;
+        macierz[koniec][index] = waga;
+
         wszystkie[index].setWierzcholek(poczatek);
         wszystkie[index].setKoniec(koniec);
         wszystkie[index].setWaga(waga);
@@ -51,12 +56,14 @@ public class Prim {
 
     private void ustaw(){
 
-        wierzcholek = new wierzcholekKolejka[e];
+        wierzcholek = new wierzcholekKolejka[v];
         lista = new ArrayList[v];
-        odwiedzane = new Boolean[e];
+        odwiedzane = new Boolean[v];
         mst = new wierzcholekKolejka[v];
-        wszystkie = new wierzcholekKolejka[e];
+        wszystkie = new wierzcholekKolejka[v];
         losowe = new Boolean[v][v];
+        macierz = new int[v][e];
+        odwiedzaneMacierz = new Boolean[v][e];
 
         index = 0;
 
@@ -73,15 +80,21 @@ public class Prim {
         for(int i = 0; i < v; i++){
 
             mst[i] = new wierzcholekKolejka(-1,-1);
+            wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
+            odwiedzane[i] = false;
+            wszystkie[i] = new wierzcholekKolejka();
             lista[i] = new ArrayList<>();
 
         }
 
-        for(int i = 0; i < e; i++){
+        for(int i = 0; i < v; i++){
 
-            odwiedzane[i] = false;
-            wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
-            wszystkie[i] = new wierzcholekKolejka();
+            for(int j = 0; j < e; j++){
+
+                macierz[i][j] = -1;
+                odwiedzaneMacierz[i][j] = false;
+
+            }
 
         }
 
@@ -108,26 +121,17 @@ public class Prim {
 
     }
 
-    public void wypiszWszystkieKrawedzieMacierz(){
+    public void wypiszKrawedzieMacierz(){
 
         if(index > 0) {
 
             System.out.println("GRAF NIESKIEROWANY");
 
-            int[][] macierz = new int[v][e];
-
-            for (int i = 0; i < e; i++) {
-
-                macierz[wszystkie[i].getWierzcholek()][i] = 1;
-                macierz[wszystkie[i].getKoniec()][i] = 1;
-
-            }
-
             for (int i = 0; i < v; i++) {
 
                 for (int j = 0; j < e; j++) {
 
-                    System.out.print(macierz[i][j] + " ");
+                    System.out.print(macierz[i][j] + "     ");
 
                 }
 
@@ -204,6 +208,7 @@ public class Prim {
         }
 
     }
+
 
     public void wypiszPrim(){
 

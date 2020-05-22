@@ -18,6 +18,7 @@ public class Kruskal {
     private ZbiorRozlaczny zr;
     private Kopiec kolejka = new Kopiec();
     private Boolean[][] odwiedzane;
+    int[][] macierz;
 
     private void wyczysc(wierzcholekKolejka[] w){
 
@@ -45,9 +46,20 @@ public class Kruskal {
 
         wierzcholek = new wierzcholekKolejka[e];
         lista = new ArrayList[v];
+        macierz = new int[v][e];
 
         for(int i = 0; i < v; i++){
             lista[i] = new ArrayList<>();
+        }
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < e; j++){
+
+                macierz[i][j] = -1;
+
+            }
+
         }
 
     }
@@ -75,6 +87,9 @@ public class Kruskal {
 
         lista[poczatek].add(w2);
         lista[koniec].add(w1);
+
+        macierz[poczatek][pozycja] = waga;
+        macierz[koniec][pozycja] = waga;
 
         wierzcholek[pozycja].setWaga(waga);
         wierzcholek[pozycja].setWierzcholek(poczatek);
@@ -119,6 +134,64 @@ public class Kruskal {
 
     }
 
+    public void AlgorytmKruskalaMacierz(){
+
+        mst = new wierzcholekKolejka[v];
+        wierzcholekKolejka pomoc;
+        zr = new ZbiorRozlaczny(v);
+        index = 0;
+
+        wyczysc(mst);
+
+        for(int i = 0; i < e; i++) {
+
+            int pozycja = 0;
+            int tab[] = new int[2];
+            int waga = 0;
+
+            for (int j = 0; j < v; j++) {
+
+                if(macierz[j][i] > -1){
+
+                    waga = macierz[j][i];
+                    tab[pozycja] = j;
+                    pozycja++;
+
+                }
+
+            }
+
+            wierzcholekKolejka w1 = new wierzcholekKolejka(waga,tab[0],tab[1]);
+            wierzcholekKolejka w2 = new wierzcholekKolejka(waga,tab[1],tab[0]);
+
+            kolejka.dodaj(w1);
+            kolejka.dodaj(w2);
+
+        }
+
+        for(int i = 0; i < v; i++)
+            zr.MakeSet(i);
+
+        while(index < v - 1){
+
+            pomoc = kolejka.minWierzcholek();
+            kolejka.usunKorzen();
+
+            int p1 = zr.FindSet(pomoc.getWierzcholek());
+            int p2 = zr.FindSet(pomoc.getKoniec());
+
+            if(p1 != p2){
+
+                mst[index] = pomoc;
+                zr.UnionSet(pomoc);
+                index++;
+
+            }
+
+        }
+
+    }
+
     public void AlgorytmKruskala(){
 
         mst = new wierzcholekKolejka[v];
@@ -137,7 +210,7 @@ public class Kruskal {
         for(int i = 0; i < v; i++)
             zr.MakeSet(i);
 
-        while(index < v - 1){
+        while(kolejka.getRozmiar() > 1){
 
             pomoc = kolejka.minWierzcholek();
             kolejka.usunKorzen();
@@ -169,7 +242,6 @@ public class Kruskal {
 
         if(pozycja > 0) {
 
-
             System.out.println("GRAF NIESKIEROWANY");
 
             for (int i = 0; i < e; i++) {
@@ -193,20 +265,11 @@ public class Kruskal {
 
             System.out.println("GRAF NIESKIEROWANY");
 
-            int[][] macierz = new int[v][e];
-
-            for (int i = 0; i < e; i++) {
-
-                macierz[wierzcholek[i].getWierzcholek()][i] = 1;
-                macierz[wierzcholek[i].getKoniec()][i] = 1;
-
-            }
-
             for (int i = 0; i < v; i++) {
 
                 for (int j = 0; j < e; j++) {
 
-                    System.out.print(macierz[i][j] + " ");
+                    System.out.print(macierz[i][j] + "    ");
 
                 }
 
