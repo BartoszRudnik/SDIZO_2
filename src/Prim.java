@@ -15,7 +15,7 @@ public class Prim {
     private wierzcholekKolejka[] wierzcholek;
     private ArrayList<wierzcholekKolejka>[] lista;
     private Boolean[] odwiedzane;
-    private Kopiec kolejka = new Kopiec();
+    private Kopiec kolejka;
     private wierzcholekKolejka[] mst;
     private wierzcholekKolejka[] wszystkie;
     private Boolean[][] losowe;
@@ -92,6 +92,18 @@ public class Prim {
                 macierz[i][j] = -1;
 
             }
+
+        }
+
+    }
+
+    public void wyczysc(){
+
+        for(int i = 0; i < v; i++){
+
+            mst[i] = new wierzcholekKolejka(-1,-1);
+            wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
+            odwiedzane[i] = false;
 
         }
 
@@ -178,6 +190,8 @@ public class Prim {
         odwiedzane[0] = true;
         wierzcholek[0].setWaga(0);
 
+        kolejka = new Kopiec();
+
         for(int i = 0; i < e; i++)
             kolejka.dodaj(wierzcholek[i]);
 
@@ -211,6 +225,8 @@ public class Prim {
         odwiedzane[0] = true;
         wierzcholek[0].setWaga(0);
 
+        kolejka = new Kopiec();
+
         for(int i = 0; i < e; i++)
             kolejka.dodaj(wierzcholek[i]);
 
@@ -225,13 +241,21 @@ public class Prim {
 
                 if(macierz[pomoc.getWierzcholek()][i] > -1) {
 
-                    if (odwiedzane[i] == false && wierzcholek[i].getWaga() > macierz[pomoc.getWierzcholek()][i]) {
+                    for (int j = 0; j < v; j++) {
 
-                        kolejka.usun(wierzcholek[i]);
-                        wierzcholek[i].setWaga(macierz[pomoc.getWierzcholek()][i]);
-                        kolejka.dodaj(wierzcholek[i]);
+                        if(macierz[j][i] > -1) {
 
-                        mst[i] = pomoc;
+                            if (odwiedzane[j] == false && wierzcholek[j].getWaga() > macierz[j][i]) {
+
+                                kolejka.usun(wierzcholek[j]);
+                                wierzcholek[j].setWaga(macierz[j][i]);
+                                kolejka.dodaj(wierzcholek[j]);
+
+                                mst[j] = pomoc;
+
+                            }
+
+                        }
 
                     }
 

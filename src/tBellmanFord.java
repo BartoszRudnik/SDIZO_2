@@ -34,6 +34,7 @@ public class tBellmanFord {
                     break;
 
                 case 1:
+                    scanner.nextLine();
                     System.out.println("Podaj nazwe pliku: ");
                     nazwaPliku = scanner.nextLine();
                     bf.wczytajBF(nazwaPliku);
@@ -66,6 +67,8 @@ public class tBellmanFord {
                     if(bf.AlgorytmBF(wartosc1,wartosc2) == true)
                         bf.wypisz(wartosc1,wartosc2);
                     System.out.println();
+
+                    bf.wyczysc();
 
                     System.out.println("Algorytm Bellmana-Forda macierzowo:");
                     if(bf.AlgorytmBFMacierz(wartosc1,wartosc2) == true)

@@ -16,7 +16,7 @@ public class Kruskal {
     private ArrayList<wierzcholekKolejka>[] lista;
     private wierzcholekKolejka[] mst;
     private ZbiorRozlaczny zr;
-    private Kopiec kolejka = new Kopiec();
+    private Kopiec kolejka;
     private Boolean[][] odwiedzane;
     int[][] macierz;
 
@@ -141,6 +141,8 @@ public class Kruskal {
         zr = new ZbiorRozlaczny(v);
         index = 0;
 
+        kolejka = new Kopiec();
+
         wyczysc(mst);
 
         for(int i = 0; i < e; i++) {
@@ -198,6 +200,8 @@ public class Kruskal {
         wierzcholekKolejka pomoc;
         zr = new ZbiorRozlaczny(v);
         index = 0;
+
+        kolejka = new Kopiec();
 
         wyczysc(mst);
 

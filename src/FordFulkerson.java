@@ -10,6 +10,7 @@ public class FordFulkerson {
     private int v;
     private int e;
 
+    private int pozycja = 0;
     private boolean check;
 
     private ArrayList<wierzcholekKolejka>[] residual;
@@ -17,6 +18,7 @@ public class FordFulkerson {
     private boolean[] odwiedzone;
     private ArrayList<Integer> lista;
     private Boolean[][] losowe;
+    private int[][] macierz;
 
     public FordFulkerson(int v, int e){
 
@@ -75,7 +77,12 @@ public class FordFulkerson {
 
         residual[poczatek].add(koniec,w);
 
+        macierz[poczatek][pozycja] = waga;
+        macierz[koniec][pozycja] = -waga;
+
         check = true;
+
+        pozycja++;
 
     }
 
@@ -111,23 +118,6 @@ public class FordFulkerson {
 
             System.out.println("GRAF SKIEROWANY");
 
-            int[][] macierz = new int[v][e];
-            int pomoc = 0;
-
-            for(int i = 0; i < v; i++){
-
-                for(int j = 0; j < residual[i].size(); j++){
-
-                    if(residual[i].get(j).getWierzcholek() != 0 || residual[i].get(j).getKoniec() != 0 || residual[i].get(j).getWaga() != 0) {
-                        macierz[i][pomoc] = 1;
-                        macierz[residual[i].get(j).getKoniec()][pomoc] = -1;
-                        pomoc++;
-                    }
-
-                }
-
-            }
-
             for (int i = 0; i < v; i++) {
 
                 for (int j = 0; j < e; j++) {
@@ -154,6 +144,7 @@ public class FordFulkerson {
         residual = new ArrayList[v];
         sciezka = new int[v];
         losowe = new Boolean[v][v];
+        macierz = new int[v][e];
 
         check = false;
 
@@ -169,6 +160,16 @@ public class FordFulkerson {
 
                 residual[i].add(new wierzcholekKolejka());
                 losowe[i][j] = false;
+
+            }
+
+        }
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < e; j++ ){
+
+                macierz[i][j] = 0;
 
             }
 
@@ -256,7 +257,59 @@ public class FordFulkerson {
 
     public void AlgorytmFFMacierz(int s, int t){
 
+        int wynik = 0;
+        sciezka = new int[v];
 
+        while(dfs(s, t) == true){
+
+            int przeplyw = Integer.MAX_VALUE;
+
+            int tmp1 = t;
+            int tmp2;
+
+            while(tmp1 != s){
+
+                tmp2 = sciezka[tmp1];
+
+                if(macierz[tmp2][tmp1] != 0) {
+
+                    if (przeplyw > Math.abs(macierz[tmp2][tmp1]))
+                        przeplyw = Math.abs(macierz[tmp2][tmp1]);
+
+                }
+
+                tmp1 = tmp2;
+
+            }
+
+            tmp1 = t;
+
+            while(tmp1 != s){
+
+                tmp2 = sciezka[tmp1];
+
+                if(macierz[tmp1][tmp2] != 0) {
+
+                    int waga1 = Math.abs(macierz[tmp1][tmp2]);
+                    int waga2 = Math.abs(macierz[tmp2][tmp1]);
+
+                    waga1 -= przeplyw;
+                    waga2 += przeplyw;
+
+                    macierz[tmp1][tmp2] = waga1;
+                    macierz[tmp2][tmp1] = waga2;
+
+                }
+
+                tmp1 = tmp2;
+
+            }
+
+            wynik += przeplyw;
+
+        }
+
+        System.out.println("Maksymalny przeplyw z wierzcholka " + s + " do wierzcholka " + t + " wynosi: " + wynik);
 
     }
 

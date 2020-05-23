@@ -16,7 +16,7 @@ public class Dijkstra {
     private wierzcholekKolejka[] wierzcholek;
     private ArrayList<wierzcholekKolejka>[] lista;
     private Boolean[] odwiedzane;
-    private Kopiec kolejka = new Kopiec();
+    private Kopiec kolejka;
     private Boolean[][] losowe;
     private int[][] macierz;
 
@@ -43,8 +43,8 @@ public class Dijkstra {
         macierz[koniec][index] = -waga;
 
         lista[poczatek].add(w1);
-        check = true;
 
+        check = true;
         index++;
 
     }
@@ -170,6 +170,17 @@ public class Dijkstra {
 
     }
 
+    public void wyczysc(){
+
+        for(int i = 0; i < v; i++) {
+
+            wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE, i);
+            odwiedzane[i] = false;
+
+        }
+
+    }
+
     private void relax(wierzcholekKolejka u, wierzcholekKolejka adj){
 
         if(odwiedzane[adj.getWierzcholek()] == false && wierzcholek[adj.getWierzcholek()].getWaga() > wierzcholek[u.getWierzcholek()].getWaga() + adj.getWaga()){
@@ -186,6 +197,8 @@ public class Dijkstra {
 
         odwiedzane[poczatek] = true;
         wierzcholek[poczatek].setWaga(0);
+
+        kolejka = new Kopiec();
 
         for(int i = 0; i < e; i++)
             kolejka.dodaj(wierzcholek[i]);
@@ -212,6 +225,8 @@ public class Dijkstra {
         odwiedzane[poczatek] = true;
         wierzcholek[poczatek].setWaga(0);
 
+        kolejka = new Kopiec();
+
         for(int i = 0; i < e; i++)
             kolejka.dodaj(wierzcholek[i]);
 
@@ -226,11 +241,19 @@ public class Dijkstra {
 
                 if(macierz[pomoc.getWierzcholek()][i] > -1) {
 
-                    if (odwiedzane[i] == false && wierzcholek[i].getWaga() > wierzcholek[pomoc.getWierzcholek()].getWaga() + macierz[pomoc.getWierzcholek()][i]) {
+                    for (int j = 0; j < v; j++) {
 
-                        kolejka.usun(wierzcholek[i]);
-                        wierzcholek[i].setWaga(pomoc.getWaga() + macierz[pomoc.getWierzcholek()][i]);
-                        kolejka.dodaj(wierzcholek[i]);
+                        if(macierz[j][i] < -1) {
+
+                            if (odwiedzane[j] == false && wierzcholek[j].getWaga() > Math.abs(macierz[j][i]) + wierzcholek[pomoc.getWierzcholek()].getWaga()) {
+
+                                kolejka.usun(wierzcholek[j]);
+                                wierzcholek[j].setWaga(Math.abs(macierz[j][i]) + wierzcholek[pomoc.getWierzcholek()].getWaga());
+                                kolejka.dodaj(wierzcholek[j]);
+
+                            }
+
+                        }
 
                     }
 
@@ -249,6 +272,8 @@ public class Dijkstra {
 
         odwiedzane[0] = true;
         wierzcholek[0].setWaga(0);
+
+        kolejka = new Kopiec();
 
         for(int i = 0; i < e; i++)
             kolejka.dodaj(wierzcholek[i]);

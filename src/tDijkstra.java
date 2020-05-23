@@ -34,6 +34,7 @@ public class tDijkstra {
                     break;
 
                 case 1:
+                    scanner.nextLine();
                     System.out.println("Podaj nazwe pliku: ");
                     nazwaPliku = scanner.nextLine();
                     dijkstra.wczytajDijkstra(nazwaPliku);
@@ -66,6 +67,8 @@ public class tDijkstra {
                     dijkstra.AlgorytmDijkstra(wartosc1,wartosc2);
                     dijkstra.wypiszWynik(wartosc1,wartosc2);
                     System.out.println();
+
+                    dijkstra.wyczysc();
 
                     System.out.println("Algorytm Dijkstry macierzowo:");
                     dijkstra.AlgorytmDijkstraMacierz(wartosc1,wartosc2);

@@ -34,7 +34,8 @@ public class tPrim {
                     break;
 
                 case 1:
-                    System.out.println("Podaj nazwe pliku: ");
+                    scanner.nextLine();
+                    System.out.println("Podaj nazwe pliku:");
                     nazwaPliku = scanner.nextLine();
                     prim.wczytajPrim(nazwaPliku);
                     System.out.println();
@@ -61,6 +62,8 @@ public class tPrim {
                     prim.AlgorytmPrima();
                     prim.wypiszPrim();
                     System.out.println();
+
+                    prim.wyczysc();
 
                     System.out.println("Algorytm Prima macierzowo: ");
                     prim.AlgorytmPrimaMacierz();

@@ -34,6 +34,7 @@ public class tFordFulkerson {
                     break;
 
                 case 1:
+                    scanner.nextLine();
                     System.out.println("Podaj nazwe pliku: ");
                     nazwaPliku = scanner.nextLine();
                     ff.wczytajFF(nazwaPliku);
