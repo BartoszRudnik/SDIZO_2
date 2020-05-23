@@ -69,7 +69,7 @@ public class pPrim {
                         prim.losowyGraf(v,e);
 
                         long sTime = System.nanoTime();
-                        //prim.AlgorytmPrimaMacierz();
+                        prim.AlgorytmPrimaMacierz();
                         long fTime = System.nanoTime();
                         fTime -= sTime;
                         tab2[i] = fTime;

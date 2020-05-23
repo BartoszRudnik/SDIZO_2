@@ -15,10 +15,8 @@ public class tKruskal {
             System.out.println("Podaj numer operacji do testowania:");
             System.out.println("1. Wczytaj dane z pliku");
             System.out.println("2. Wygeneruj graf losowo");
-            System.out.println("3. Wyswietl graf listowo");
-            System.out.println("4. Wyswietl graf macierzowo");
-            System.out.println("5. Algorytm Kruskala listowo z wynikami");
-            System.out.println("6. Algorytm Kruskala macierzowo z wynikami");
+            System.out.println("3. Wyswietl graf listowo i macierzowo");
+            System.out.println("4. Algorytm Kruskala listowo i macierzowo z wynikami");
             System.out.println("0. Wyjscie");
 
             int nrOperacji = scanner.nextInt();
@@ -54,20 +52,17 @@ public class tKruskal {
                 case 3:
                     kruskal.wypiszKrawedzieLista();
                     System.out.println();
-                    break;
-
-                case 4:
                     kruskal.wypiszKrawedzieMacierz();
                     System.out.println();
                     break;
 
-                case 5:
+                case 4:
+                    System.out.println("Algorytm Kruskala listowo: ");
                     kruskal.AlgorytmKruskala();
                     kruskal.wypisz();
                     System.out.println();
-                    break;
 
-                case 6:
+                    System.out.println("Algorytm Kruskala macierzowo: ");
                     kruskal.AlgorytmKruskalaMacierz();
                     kruskal.wypisz();
                     System.out.println();

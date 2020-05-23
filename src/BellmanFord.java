@@ -10,12 +10,15 @@ public class BellmanFord {
     private int v;
     private int e;
 
+    private int index = 0;
     private boolean check;
 
     private ArrayList<wierzcholekKolejka>[] lista;
     private wierzcholekKolejka[] wierzcholek;
     private wierzcholekKolejka[] wynik;
     private Boolean[][] losowe;
+    private int[][] macierz;
+    private int[][] macierz2;
 
     public BellmanFord(int v, int e){
 
@@ -38,8 +41,11 @@ public class BellmanFord {
         wynik = new wierzcholekKolejka[v];
         losowe = new Boolean[v][v];
         lista = new ArrayList[v];
+        macierz = new int[v][e];
+        macierz2 = new int[v][e];
 
         check = false;
+        index  = 0;
 
         for(int i = 0; i < v; i++){
 
@@ -59,6 +65,17 @@ public class BellmanFord {
 
         }
 
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < e; j++){
+
+                macierz[i][j] = Short.MAX_VALUE;
+                macierz2[i][j] = 0;
+
+            }
+
+        }
+
     }
 
     public void dodajKrawedz(int poczatek, int koniec, int waga){
@@ -67,7 +84,14 @@ public class BellmanFord {
 
         lista[poczatek].add(w);
 
+        macierz[poczatek][index] = waga;
+
+        macierz2[poczatek][index] = 1;
+        macierz2[koniec][index] = -1;
+
         check = true;
+
+        index++;
 
     }
 
@@ -102,26 +126,11 @@ public class BellmanFord {
 
             System.out.println("GRAF SKIEROWANY");
 
-            int[][] macierz = new int[v][e];
-            int pomoc = 0;
-
-            for(int i = 0; i < v; i++){
-
-                for(int j = 0; j < lista[i].size(); j++){
-
-                    macierz[i][pomoc] = 1;
-                    macierz[lista[i].get(j).getKoniec()][pomoc] = -1;
-                    pomoc++;
-
-                }
-
-            }
-
             for (int i = 0; i < v; i++) {
 
                 for (int j = 0; j < e; j++) {
 
-                    System.out.print(macierz[i][j] + "  ");
+                    System.out.print(macierz2[i][j] + "  ");
 
                 }
 
@@ -187,6 +196,43 @@ public class BellmanFord {
             for (int j = 0; j < lista[i].size(); j++) {
 
                 if (wynik[lista[i].get(j).getWierzcholek()].getWaga() + lista[i].get(j).getWaga() < wynik[lista[i].get(j).getKoniec()].getWaga()) {
+                    return false;
+
+                }
+
+            }
+
+        }
+
+        return true;
+
+    }
+
+    public Boolean AlgorytmBFMacierz(int poczatek, int koniec){
+
+        wynik[poczatek].setWaga(0);
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < e; j++){
+
+                if(macierz[i][j] < Short.MAX_VALUE) {
+
+                    if (wynik[i].getWaga() + macierz[i][j] < wynik[j].getWaga()) {
+                        wynik[j].setWaga(wynik[i].getWaga() + macierz[i][j]);
+                    }
+
+                }
+
+            }
+
+        }
+
+        for(int i = 0; i < v; i++) {
+
+            for (int j = 0; j < e; j++) {
+
+                if (wynik[i].getWaga() + macierz[i][j] < wynik[j].getWaga()) {
                     return false;
 
                 }

@@ -11,12 +11,14 @@ public class Dijkstra {
     private int e;
 
     private Boolean check;
+    int index = 0;
 
     private wierzcholekKolejka[] wierzcholek;
     private ArrayList<wierzcholekKolejka>[] lista;
     private Boolean[] odwiedzane;
     private Kopiec kolejka = new Kopiec();
     private Boolean[][] losowe;
+    private int[][] macierz;
 
     public Dijkstra(){
 
@@ -37,8 +39,13 @@ public class Dijkstra {
 
         wierzcholekKolejka w1 = new wierzcholekKolejka(waga,koniec);
 
+        macierz[poczatek][index] = waga;
+        macierz[koniec][index] = -waga;
+
         lista[poczatek].add(w1);
         check = true;
+
+        index++;
 
     }
 
@@ -73,26 +80,11 @@ public class Dijkstra {
 
             System.out.println("GRAF SKIEROWANY");
 
-            int[][] macierz = new int[v][e];
-            int pomoc = 0;
-
-            for(int i = 0; i < v; i++){
-
-                for(int j = 0; j < lista[i].size(); j++){
-
-                    macierz[i][pomoc] = 1;
-                    macierz[lista[i].get(j).getWierzcholek()][pomoc] = -1;
-                    pomoc++;
-
-                }
-
-            }
-
             for (int i = 0; i < v; i++) {
 
                 for (int j = 0; j < e; j++) {
 
-                    System.out.print(macierz[i][j] + "  ");
+                    System.out.print(macierz[i][j] + "    ");
 
                 }
 
@@ -143,8 +135,10 @@ public class Dijkstra {
         lista = new ArrayList[v];
         odwiedzane = new Boolean[v];
         losowe = new Boolean[v][v];
+        macierz = new int[v][e];
 
         check = false;
+        index = 0;
 
         for(int i = 0; i < v; i++) {
 
@@ -161,6 +155,16 @@ public class Dijkstra {
             lista[i] = new ArrayList<>();
             wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
             odwiedzane[i] = false;
+
+        }
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < e; j++){
+
+                macierz[i][j] = -1;
+
+            }
 
         }
 
@@ -195,6 +199,44 @@ public class Dijkstra {
 
             for(wierzcholekKolejka w : lista[pomoc.getWierzcholek()])
                 relax(pomoc,w);
+
+            if(odwiedzane[koniec] == true)
+                break;
+
+        }
+
+    }
+
+    public void AlgorytmDijkstraMacierz(int poczatek, int  koniec){
+
+        odwiedzane[poczatek] = true;
+        wierzcholek[poczatek].setWaga(0);
+
+        for(int i = 0; i < e; i++)
+            kolejka.dodaj(wierzcholek[i]);
+
+        while(kolejka.getRozmiar() > 1){
+
+            wierzcholekKolejka pomoc = kolejka.minWierzcholek();
+            kolejka.usunKorzen();
+
+            odwiedzane[pomoc.getWierzcholek()] = true;
+
+            for(int i = 0; i < e; i++){
+
+                if(macierz[pomoc.getWierzcholek()][i] > -1) {
+
+                    if (odwiedzane[i] == false && wierzcholek[i].getWaga() > wierzcholek[pomoc.getWierzcholek()].getWaga() + macierz[pomoc.getWierzcholek()][i]) {
+
+                        kolejka.usun(wierzcholek[i]);
+                        wierzcholek[i].setWaga(pomoc.getWaga() + macierz[pomoc.getWierzcholek()][i]);
+                        kolejka.dodaj(wierzcholek[i]);
+
+                    }
+
+                }
+
+            }
 
             if(odwiedzane[koniec] == true)
                 break;

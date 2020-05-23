@@ -19,7 +19,6 @@ public class Prim {
     private wierzcholekKolejka[] mst;
     private wierzcholekKolejka[] wszystkie;
     private Boolean[][] losowe;
-    private Boolean[][] odwiedzaneMacierz;
     int[][] macierz;
 
     public Prim(){
@@ -63,7 +62,6 @@ public class Prim {
         wszystkie = new wierzcholekKolejka[v];
         losowe = new Boolean[v][v];
         macierz = new int[v][e];
-        odwiedzaneMacierz = new Boolean[v][e];
 
         index = 0;
 
@@ -92,7 +90,6 @@ public class Prim {
             for(int j = 0; j < e; j++){
 
                 macierz[i][j] = -1;
-                odwiedzaneMacierz[i][j] = false;
 
             }
 
@@ -200,6 +197,43 @@ public class Prim {
                     kolejka.dodaj(wierzcholek[w.getWierzcholek()]);
 
                     mst[w.getWierzcholek()] = pomoc;
+
+                }
+
+            }
+
+        }
+
+    }
+
+    public void AlgorytmPrimaMacierz(){
+
+        odwiedzane[0] = true;
+        wierzcholek[0].setWaga(0);
+
+        for(int i = 0; i < e; i++)
+            kolejka.dodaj(wierzcholek[i]);
+
+        while(kolejka.getRozmiar() > 1){
+
+            wierzcholekKolejka pomoc = kolejka.minWierzcholek();
+            kolejka.usunKorzen();
+
+            odwiedzane[pomoc.getWierzcholek()] = true;
+
+            for(int i = 0; i < e; i++){
+
+                if(macierz[pomoc.getWierzcholek()][i] > -1) {
+
+                    if (odwiedzane[i] == false && wierzcholek[i].getWaga() > macierz[pomoc.getWierzcholek()][i]) {
+
+                        kolejka.usun(wierzcholek[i]);
+                        wierzcholek[i].setWaga(macierz[pomoc.getWierzcholek()][i]);
+                        kolejka.dodaj(wierzcholek[i]);
+
+                        mst[i] = pomoc;
+
+                    }
 
                 }
 

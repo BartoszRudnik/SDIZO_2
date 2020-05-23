@@ -254,6 +254,12 @@ public class FordFulkerson {
 
     }
 
+    public void AlgorytmFFMacierz(int s, int t){
+
+
+
+    }
+
     public void wczytajFF(String nazwaPliku){
 
         try{

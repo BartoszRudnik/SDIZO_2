@@ -15,10 +15,8 @@ public class tFordFulkerson {
             System.out.println("Podaj numer operacji do testowania:");
             System.out.println("1. Wczytaj dane z pliku");
             System.out.println("2. Wygeneruj graf losowo");
-            System.out.println("3. Wyswietl graf listowo");
-            System.out.println("4. Wyswietl graf macierzowo");
-            System.out.println("5. Algorytm Forda-Fulkersona listowo z wynikami");
-            System.out.println("6. Algorytm Forda-Fulkersona macierzowo z wynikami");
+            System.out.println("3. Wyswietl graf listowo i macierzowo");
+            System.out.println("4. Algorytm Forda-Fulkersona listowo i macierzowo z wynikami");
             System.out.println("0. Wyjscie");
 
             int nrOperacji = scanner.nextInt();
@@ -54,25 +52,24 @@ public class tFordFulkerson {
                 case 3:
                     ff.wypiszKrawedzieLista();
                     System.out.println();
-                    break;
-
-                case 4:
                     ff.wypiszKrawedzieMacierz();
                     System.out.println();
                     break;
 
-                case 5:
+                case 4:
                     System.out.println("Podaj wierzcholek startowy: ");
                     wartosc1 = scanner.nextInt();
                     System.out.println("Podaj wierzcholek koncowy: ");
                     wartosc2 = scanner.nextInt();
+
+                    System.out.println("Algorytm Forda-Fulkersona listowo:");
                     ff.AlgorytmFF(wartosc1,wartosc2);
                     System.out.println();
+
+                    System.out.println("Algorytm Forda-Fulkersona macierzowo:");
+                    ff.AlgorytmFFMacierz(wartosc1,wartosc2);
                     break;
 
-                case 6:
-                    System.out.println();
-                    break;
 
             }
 

@@ -15,10 +15,8 @@ public class tPrim {
             System.out.println("Podaj numer operacji do testowania:");
             System.out.println("1. Wczytaj dane z pliku");
             System.out.println("2. Wygeneruj graf losowo");
-            System.out.println("3. Wyswietl graf listowo");
-            System.out.println("4. Wyswietl graf macierzowo");
-            System.out.println("5. Algorytm Prima listowo z wynikami");
-            System.out.println("6. Algorytm Prima macierzowo z wynikami");
+            System.out.println("3. Wyswietl graf listowo i macierzowo");
+            System.out.println("4. Algorytm Prima listowo i macierzowo z wynikami");
             System.out.println("0. Wyjscie");
 
             int nrOperacji = scanner.nextInt();
@@ -54,20 +52,19 @@ public class tPrim {
                 case 3:
                     prim.wypiszKrawedzieLista();
                     System.out.println();
-                    break;
-
-                case 4:
                     prim.wypiszKrawedzieMacierz();
                     System.out.println();
                     break;
 
-                case 5:
+                case 4:
+                    System.out.println("Algorytm Prima listowo: ");
                     prim.AlgorytmPrima();
                     prim.wypiszPrim();
                     System.out.println();
-                    break;
 
-                case 6:
+                    System.out.println("Algorytm Prima macierzowo: ");
+                    prim.AlgorytmPrimaMacierz();
+                    prim.wypiszPrim();
                     System.out.println();
                     break;
 

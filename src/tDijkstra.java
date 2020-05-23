@@ -15,10 +15,8 @@ public class tDijkstra {
             System.out.println("Podaj numer operacji do testowania:");
             System.out.println("1. Wczytaj dane z pliku");
             System.out.println("2. Wygeneruj graf losowo");
-            System.out.println("3. Wyswietl graf listowo");
-            System.out.println("4. Wyswietl graf macierzowo");
-            System.out.println("5. Algorytm Dijkstry listowo z wynikami");
-            System.out.println("6. Algorytm Dijkstry macierzowo z wynikami");
+            System.out.println("3. Wyswietl graf listowo i macierzowo");
+            System.out.println("4. Algorytm Dijkstry listowo i macierzowo z wynikami");
             System.out.println("0. Wyjscie");
 
             int nrOperacji = scanner.nextInt();
@@ -54,24 +52,24 @@ public class tDijkstra {
                 case 3:
                     dijkstra.wypiszKrawedzieLista();
                     System.out.println();
-                    break;
-
-                case 4:
                     dijkstra.wypiszKrawedzieMacierz();
                     System.out.println();
                     break;
 
-                case 5:
+                case 4:
                     System.out.println("Podaj wierzcholek startowy: ");
                     wartosc1 = scanner.nextInt();
                     System.out.println("Podaj wierzcholek koncowy: ");
                     wartosc2 = scanner.nextInt();
+
+                    System.out.println("Algorytm Dijkstry listowo:");
                     dijkstra.AlgorytmDijkstra(wartosc1,wartosc2);
                     dijkstra.wypiszWynik(wartosc1,wartosc2);
                     System.out.println();
-                    break;
 
-                case 6:
+                    System.out.println("Algorytm Dijkstry macierzowo:");
+                    dijkstra.AlgorytmDijkstraMacierz(wartosc1,wartosc2);
+                    dijkstra.wypiszWynik(wartosc1,wartosc2);
                     System.out.println();
                     break;
 

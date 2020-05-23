@@ -78,7 +78,7 @@ public class pDijkstra {
                         int koniec = r.nextInt(v);
 
                         long sTime = System.nanoTime();
-                        //dijkstra.AlgorytmDijkstraMacierz(poczatek,koniec);
+                        dijkstra.AlgorytmDijkstraMacierz(poczatek,koniec);
                         long fTime = System.nanoTime();
                         fTime -= sTime;
                         tab2[i] = fTime;

@@ -78,7 +78,7 @@ public class pBellmanFord {
                         int koniec = r.nextInt(v);
 
                         long sTime = System.nanoTime();
-                        //bf.AlgorytmBFMacierz(poczatek,koniec);
+                        bf.AlgorytmBFMacierz(poczatek,koniec);
                         long fTime = System.nanoTime();
                         fTime -= sTime;
                         tab2[i] = fTime;
