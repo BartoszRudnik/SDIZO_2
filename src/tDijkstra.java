@@ -76,6 +76,11 @@ public class tDijkstra {
                     System.out.println();
                     break;
 
+                default:
+                    System.out.println("Wybrano zly numer.");
+                    System.out.println();
+                    break;
+
             }
 
         }

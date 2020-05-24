@@ -81,11 +81,15 @@ public class pFordFulkerson {
                         int poczatek = r.nextInt(v);
                         int koniec = r.nextInt(v);
 
-                        long sTime = System.nanoTime();
-                        ff.AlgorytmFFMacierz(poczatek,koniec);
-                        long fTime = System.nanoTime();
-                        fTime -= sTime;
-                        tab2[i] = fTime;
+                        if(poczatek != koniec) {
+
+                            long sTime = System.nanoTime();
+                            ff.AlgorytmFFMacierz(poczatek, koniec);
+                            long fTime = System.nanoTime();
+                            fTime -= sTime;
+                            tab2[i] = fTime;
+
+                        }
 
 
                     }

@@ -76,6 +76,11 @@ public class tFordFulkerson {
 
                     break;
 
+                default:
+                    System.out.println("Wybrano zly numer.");
+                    System.out.println();
+                    break;
+
             }
 
         }

@@ -204,6 +204,7 @@ public class FordFulkerson {
         macierz2 = new int[v][e];
 
         check = false;
+        pozycja = 0;
 
         for(int i = 0; i < v; i++){
 
