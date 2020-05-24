@@ -58,6 +58,7 @@ public class tFordFulkerson {
                     break;
 
                 case 4:
+
                     System.out.println("Podaj wierzcholek startowy: ");
                     wartosc1 = scanner.nextInt();
                     System.out.println("Podaj wierzcholek koncowy: ");
@@ -69,8 +70,11 @@ public class tFordFulkerson {
 
                     System.out.println("Algorytm Forda-Fulkersona macierzowo:");
                     ff.AlgorytmFFMacierz(wartosc1,wartosc2);
-                    break;
+                    System.out.println();
 
+                    ff.wyczysc();
+
+                    break;
 
             }
 

@@ -14,11 +14,13 @@ public class FordFulkerson {
     private boolean check;
 
     private ArrayList<wierzcholekKolejka>[] residual;
+    private wierzcholekKolejka[] wszystkie;
     private int[] sciezka;
     private boolean[] odwiedzone;
     private ArrayList<Integer> lista;
     private Boolean[][] losowe;
     private int[][] macierz;
+    private int[][] macierz2;
 
     public FordFulkerson(int v, int e){
 
@@ -71,14 +73,67 @@ public class FordFulkerson {
 
     }
 
+    public boolean dfsMacierz(int s, int t){
+
+        lista = new ArrayList<>();
+        odwiedzone = new boolean[v];
+
+        for(int i = 0; i < v; i++)
+            odwiedzone[i] = false;
+
+        lista.add(s);
+        sciezka[s] = -1;
+        odwiedzone[s] = true;
+
+        while(lista.size() > 0) {
+
+            int u = lista.get(0);
+            lista.remove(0);
+
+            for (int i = 0; i < v; i++) {
+
+                int index = -1;
+
+                for(int j = 0; j < e; j++){
+
+                    if(macierz[u][j] != 0 && macierz[i][j] != 0)
+                        index = j;
+
+                }
+
+                if (index != -1 && macierz[u][index] > 0 && odwiedzone[i] == false) {
+
+                    lista.add(i);
+                    sciezka[i] = u;
+                    odwiedzone[i] = true;
+
+                }
+
+            }
+
+        }
+
+        if (odwiedzone[t] == true)
+            return true;
+        else
+            return false;
+
+    }
+
     public void dodajKrawedz(int poczatek, int koniec, int waga){
 
         wierzcholekKolejka w = new wierzcholekKolejka(waga,poczatek,koniec);
+        wierzcholekKolejka w2 = new wierzcholekKolejka(waga,poczatek,koniec);
 
         residual[poczatek].add(koniec,w);
 
+        wszystkie[pozycja] = w2;
+
         macierz[poczatek][pozycja] = waga;
         macierz[koniec][pozycja] = -waga;
+
+        macierz2[poczatek][pozycja] = waga;
+        macierz2[koniec][pozycja] = -waga;
 
         check = true;
 
@@ -142,9 +197,11 @@ public class FordFulkerson {
     private void ustaw(){
 
         residual = new ArrayList[v];
+        wszystkie = new wierzcholekKolejka[e];
         sciezka = new int[v];
         losowe = new Boolean[v][v];
         macierz = new int[v][e];
+        macierz2 = new int[v][e];
 
         check = false;
 
@@ -165,11 +222,58 @@ public class FordFulkerson {
 
         }
 
+        for(int i = 0; i < e; i++){
+
+            wszystkie[i] = new wierzcholekKolejka();
+
+        }
+
         for(int i = 0; i < v; i++){
 
             for(int j = 0; j < e; j++ ){
 
                 macierz[i][j] = 0;
+                macierz2[i][j] = 0;
+
+            }
+
+        }
+
+    }
+
+    public void wyczysc(){
+
+        residual = new ArrayList[v];
+
+        for(int i = 0; i < v; i++){
+
+            residual[i] = new ArrayList<>();
+
+        }
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < v; j++){
+
+                residual[i].add(new wierzcholekKolejka());
+
+            }
+
+        }
+
+        for(int i = 0; i < e; i++){
+
+            residual[wszystkie[i].getWierzcholek()].get(wszystkie[i].getKoniec()).setWaga(wszystkie[i].getWaga());
+            residual[wszystkie[i].getWierzcholek()].get(wszystkie[i].getKoniec()).setWierzcholek(wszystkie[i].getWierzcholek());
+            residual[wszystkie[i].getWierzcholek()].get(wszystkie[i].getKoniec()).setKoniec(wszystkie[i].getKoniec());
+
+        }
+
+        for(int i = 0; i < v; i++){
+
+            for(int j = 0; j < e; j++){
+
+                macierz[i][j] = macierz2[i][j];
 
             }
 
@@ -260,7 +364,7 @@ public class FordFulkerson {
         int wynik = 0;
         sciezka = new int[v];
 
-        while(dfs(s, t) == true){
+        while(dfsMacierz(s, t) == true){
 
             int przeplyw = Integer.MAX_VALUE;
 
@@ -271,12 +375,19 @@ public class FordFulkerson {
 
                 tmp2 = sciezka[tmp1];
 
-                if(macierz[tmp2][tmp1] != 0) {
+                int index = -1;
 
-                    if (przeplyw > Math.abs(macierz[tmp2][tmp1]))
-                        przeplyw = Math.abs(macierz[tmp2][tmp1]);
+                for(int i = 0; i < e; i++){
+
+                    if(macierz[tmp2][i] != 0 && macierz[tmp1][i] != 0) {
+                        index = i;
+                        break;
+                    }
 
                 }
+
+                if (index != -1 && przeplyw > Math.abs(macierz[tmp2][index]))
+                    przeplyw = Math.abs(macierz[tmp2][index]);
 
                 tmp1 = tmp2;
 
@@ -288,16 +399,32 @@ public class FordFulkerson {
 
                 tmp2 = sciezka[tmp1];
 
-                if(macierz[tmp1][tmp2] != 0) {
+                int index = -1;
 
-                    int waga1 = Math.abs(macierz[tmp1][tmp2]);
-                    int waga2 = Math.abs(macierz[tmp2][tmp1]);
+                for(int i = 0; i < e; i++){
+
+                    if(macierz[tmp2][i] != 0 && macierz[tmp1][i] != 0) {
+                        index = i;
+                        break;
+                    }
+
+                }
+
+                if(index != -1) {
+
+                    int waga1 = macierz[tmp2][index];
+                    int waga2 = macierz[tmp1][index];
+
+                    if(waga1 < 0)
+                        waga1 = 0;
+                    if(waga2 < 0)
+                        waga2 = 0;
 
                     waga1 -= przeplyw;
                     waga2 += przeplyw;
 
-                    macierz[tmp1][tmp2] = waga1;
-                    macierz[tmp2][tmp1] = waga2;
+                    macierz[tmp2][index] = waga1;
+                    macierz[tmp1][index] = waga2;
 
                 }
 
