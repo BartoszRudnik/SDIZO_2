@@ -302,7 +302,10 @@ public class Dijkstra {
 
     public void wypiszWynik(int poczatek, int koniec){
 
-        System.out.println("Wierzcholek poczatkowy: " + poczatek + " Wierzcholek koncowy: "+ koniec  + " Waga najkrotszej sciezki: " + wierzcholek[koniec].getWaga());
+        if(wierzcholek[koniec].getWaga() != Integer.MAX_VALUE)
+            System.out.println("Wierzcholek poczatkowy: " + poczatek + " Wierzcholek koncowy: "+ koniec  + " Waga najkrotszej sciezki: " + wierzcholek[koniec].getWaga());
+        else
+            System.out.println("Brak sciezki pomiedzy tymi wierzcholkami");
 
     }
 

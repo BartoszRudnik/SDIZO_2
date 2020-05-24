@@ -301,7 +301,10 @@ public class BellmanFord {
 
     public void wypisz(int poczatek, int koniec){
 
-        System.out.println("Wierzcholek poczatkowy: " + poczatek + " Wierzcholek koncowy: " + koniec + " Waga najkrotszej sciezki: " + wynik[koniec].getWaga());
+        if(wynik[koniec].getWaga() != Short.MAX_VALUE)
+            System.out.println("Wierzcholek poczatkowy: " + poczatek + " Wierzcholek koncowy: " + koniec + " Waga najkrotszej sciezki: " + wynik[koniec].getWaga());
+        else
+            System.out.println("Brak sciezki pomiedzy tymi wierzcholkami");
 
     }
 
