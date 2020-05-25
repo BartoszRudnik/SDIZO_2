@@ -92,7 +92,7 @@ public class FordFulkerson {
             if(odwiedzone[u] == false)
                 odwiedzone[u] = true;
 
-            for(int i = 0; i < residual[u].size(); i++){
+            for(int i = 0; i < v; i++){
 
                 if(residual[u].get(i).getWaga() > 0 && odwiedzone[i] == false) {
                     lista.add(i);
