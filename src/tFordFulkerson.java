@@ -16,7 +16,8 @@ public class tFordFulkerson {
             System.out.println("1. Wczytaj dane z pliku");
             System.out.println("2. Wygeneruj graf losowo");
             System.out.println("3. Wyswietl graf listowo i macierzowo");
-            System.out.println("4. Algorytm Forda-Fulkersona listowo i macierzowo z wynikami");
+            System.out.println("4. Algorytm Forda-Fulkersona listowo i macierzowo z wynikami (BFS)");
+            System.out.println("5. Algorytm Forda-Fulkersona listowo i macierzowo z wynikami (DFS)");
             System.out.println("0. Wyjscie");
 
             int nrOperacji = scanner.nextInt();
@@ -64,17 +65,37 @@ public class tFordFulkerson {
                     System.out.println("Podaj wierzcholek koncowy: ");
                     wartosc2 = scanner.nextInt();
 
-                    System.out.println("Algorytm Forda-Fulkersona listowo:");
-                    ff.AlgorytmFF(wartosc1,wartosc2);
+                    System.out.println("Algorytm Forda-Fulkersona listowo(BFS):");
+                    ff.AlgorytmFFBfs(wartosc1,wartosc2);
                     System.out.println();
 
-                    System.out.println("Algorytm Forda-Fulkersona macierzowo:");
-                    ff.AlgorytmFFMacierz(wartosc1,wartosc2);
+                    System.out.println("Algorytm Forda-Fulkersona macierzowo(BFS):");
+                    ff.AlgorytmFFMacierzBfs(wartosc1,wartosc2);
                     System.out.println();
 
                     ff.wyczysc();
 
                     break;
+
+                case 5:
+
+                    System.out.println("Podaj wierzcholek startowy: ");
+                    wartosc1 = scanner.nextInt();
+                    System.out.println("Podaj wierzcholek koncowy: ");
+                    wartosc2 = scanner.nextInt();
+
+                    System.out.println("Algorytm Forda-Fulkersona listowo(DFS):");
+                    ff.AlgorytmFFDfs(wartosc1,wartosc2);
+                    System.out.println();
+
+                    System.out.println("Algorytm Forda-Fulkersona macierzowo(DFS):");
+                    ff.AlgorytmFFMacierzDfs(wartosc1,wartosc2);
+                    System.out.println();
+
+                    ff.wyczysc();
+
+                    break;
+
 
                 default:
                     System.out.println("Wybrano zly numer.");

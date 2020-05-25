@@ -35,7 +35,7 @@ public class FordFulkerson {
 
     }
 
-    public boolean dfs(int s, int t){
+    private boolean bfs(int s, int t){
 
         lista = new ArrayList<>();
         odwiedzone = new boolean[v];
@@ -73,7 +73,44 @@ public class FordFulkerson {
 
     }
 
-    public boolean dfsMacierz(int s, int t){
+    private boolean dfs(int s, int t){
+
+        lista = new ArrayList<>();
+        odwiedzone = new boolean[v];
+
+        for(int i = 0; i < v; i++)
+            odwiedzone[i] = false;
+
+        lista.add(s);
+        sciezka[s] = -1;
+
+        while(lista.size() > 0){
+
+            int u = lista.get(0);
+            lista.remove(0);
+
+            if(odwiedzone[u] == false)
+                odwiedzone[u] = true;
+
+            for(int i = 0; i < residual[u].size(); i++){
+
+                if(residual[u].get(i).getWaga() > 0 && odwiedzone[i] == false) {
+                    lista.add(i);
+                    sciezka[i] = u;
+                }
+
+            }
+
+        }
+
+        if(odwiedzone[t] == true)
+            return true;
+        else
+            return false;
+
+    }
+
+    private boolean bfsMacierz(int s, int t){
 
         lista = new ArrayList<>();
         odwiedzone = new boolean[v];
@@ -114,6 +151,52 @@ public class FordFulkerson {
         }
 
         if (odwiedzone[t] == true)
+            return true;
+        else
+            return false;
+
+    }
+
+    private boolean dfsMacierz(int s, int t){
+
+        lista = new ArrayList<>();
+        odwiedzone = new boolean[v];
+
+        for(int i = 0; i < v; i++)
+            odwiedzone[i] = false;
+
+        lista.add(s);
+        sciezka[s] = -1;
+
+        while(lista.size() > 0){
+
+            int u = lista.get(0);
+            lista.remove(0);
+
+            if(odwiedzone[u] == false)
+                odwiedzone[u] = true;
+
+            for(int i = 0; i < v; i++) {
+
+                int index = -1;
+
+                for (int j = 0; j < e; j++) {
+
+                    if(macierz[u][j] != 0 && macierz[i][j] != 0)
+                        index = j;
+
+                }
+
+                if (index != -1 && macierz[u][index] > 0 && odwiedzone[i] == false) {
+                    lista.add(i);
+                    sciezka[i] = u;
+                }
+
+            }
+
+        }
+
+        if(odwiedzone[t] == true)
             return true;
         else
             return false;
@@ -310,7 +393,57 @@ public class FordFulkerson {
 
     }
 
-    public void AlgorytmFF(int s, int t){
+    public void AlgorytmFFBfs(int s, int t){
+
+        int wynik = 0;
+        sciezka = new int[v];
+
+        while(bfs(s, t) == true){
+
+            int przeplyw = Integer.MAX_VALUE;
+
+            int tmp1 = t;
+            int tmp2;
+
+            while(tmp1 != s){
+
+                tmp2 = sciezka[tmp1];
+
+                if(przeplyw > residual[tmp2].get(tmp1).getWaga())
+                    przeplyw = residual[tmp2].get(tmp1).getWaga();
+
+                tmp1 = tmp2;
+
+            }
+
+            tmp1 = t;
+
+            while(tmp1 != s){
+
+                tmp2 = sciezka[tmp1];
+
+                int waga1 = residual[tmp2].get(tmp1).getWaga();
+                int waga2 = residual[tmp1].get(tmp2).getWaga();
+
+                waga1 -= przeplyw;
+                waga2 += przeplyw;
+
+                residual[tmp2].get(tmp1).setWaga(waga1);
+                residual[tmp1].get(tmp2).setWaga(waga2);
+
+                tmp1 = tmp2;
+
+            }
+
+            wynik += przeplyw;
+
+        }
+
+        System.out.println("Maksymalny przeplyw z wierzcholka " + s + " do wierzcholka " + t + " wynosi: " + wynik);
+
+    }
+
+    public void AlgorytmFFDfs(int s, int t){
 
         int wynik = 0;
         sciezka = new int[v];
@@ -360,7 +493,88 @@ public class FordFulkerson {
 
     }
 
-    public void AlgorytmFFMacierz(int s, int t){
+    public void AlgorytmFFMacierzBfs(int s, int t){
+
+        int wynik = 0;
+        sciezka = new int[v];
+
+        while(bfsMacierz(s, t) == true){
+
+            int przeplyw = Integer.MAX_VALUE;
+
+            int tmp1 = t;
+            int tmp2;
+
+            while(tmp1 != s){
+
+                tmp2 = sciezka[tmp1];
+
+                int index = -1;
+
+                for(int i = 0; i < e; i++){
+
+                    if(macierz[tmp2][i] != 0 && macierz[tmp1][i] != 0) {
+                        index = i;
+                        break;
+                    }
+
+                }
+
+                if (index != -1 && przeplyw > Math.abs(macierz[tmp2][index]))
+                    przeplyw = Math.abs(macierz[tmp2][index]);
+
+                tmp1 = tmp2;
+
+            }
+
+            tmp1 = t;
+
+            while(tmp1 != s){
+
+                tmp2 = sciezka[tmp1];
+
+                int index = -1;
+
+                for(int i = 0; i < e; i++){
+
+                    if(macierz[tmp2][i] != 0 && macierz[tmp1][i] != 0) {
+                        index = i;
+                        break;
+                    }
+
+                }
+
+                if(index != -1) {
+
+                    int waga1 = macierz[tmp2][index];
+                    int waga2 = macierz[tmp1][index];
+
+                    if(waga1 < 0)
+                        waga1 = 0;
+                    if(waga2 < 0)
+                        waga2 = 0;
+
+                    waga1 -= przeplyw;
+                    waga2 += przeplyw;
+
+                    macierz[tmp2][index] = waga1;
+                    macierz[tmp1][index] = waga2;
+
+                }
+
+                tmp1 = tmp2;
+
+            }
+
+            wynik += przeplyw;
+
+        }
+
+        System.out.println("Maksymalny przeplyw z wierzcholka " + s + " do wierzcholka " + t + " wynosi: " + wynik);
+
+    }
+
+    public void AlgorytmFFMacierzDfs(int s, int t){
 
         int wynik = 0;
         sciezka = new int[v];

@@ -19,8 +19,10 @@ public class pFordFulkerson {
         while(spr){
 
             System.out.println("Wybierz operacje do przeprowadzenia pomiarow");
-            System.out.println("1. Algorytm FordaFulkersona - wersja listowa");
-            System.out.println("2. Algorytm FordaFulkersona - wersja macierzowa");
+            System.out.println("1. Algorytm FordaFulkersona - wersja listowa (BFS)");
+            System.out.println("2. Algorytm FordaFulkersona - wersja macierzowa (BFS)");
+            System.out.println("3. Algorytm FordaFulkersona - wersja listowa (DFS)");
+            System.out.println("4. Algorytm FordaFulkersona - wersja macierzowa (DFS)");
             System.out.println("0. Wyjscie");
 
             int nrOperacji = scanner.nextInt();
@@ -55,7 +57,7 @@ public class pFordFulkerson {
                         if(poczatek != koniec) {
 
                             long sTime = System.nanoTime();
-                            ff.AlgorytmFF(poczatek, koniec);
+                            ff.AlgorytmFFBfs(poczatek, koniec);
                             long fTime = System.nanoTime();
                             fTime -= sTime;
                             tab[i] = fTime;
@@ -84,7 +86,7 @@ public class pFordFulkerson {
                         if(poczatek != koniec) {
 
                             long sTime = System.nanoTime();
-                            ff.AlgorytmFFMacierz(poczatek, koniec);
+                            ff.AlgorytmFFMacierzBfs(poczatek, koniec);
                             long fTime = System.nanoTime();
                             fTime -= sTime;
                             tab2[i] = fTime;
@@ -95,6 +97,66 @@ public class pFordFulkerson {
                     }
 
                     zapisz("FordFulkersonMacierz.txt",tab2);
+                    break;
+
+                case 3:
+                    long[] tab3 = new long[iloscTestow];
+                    System.out.println("Podaj ilosc wierzcholkow: ");
+                    v = scanner.nextInt();
+                    System.out.println("Podaj gestosc: ");
+                    e = scanner.nextInt();
+
+                    for(int i = 0; i < iloscTestow; i++) {
+
+                        ff.losowyGraf(v,e);
+
+                        int poczatek = r.nextInt(v);
+                        int koniec = r.nextInt(v);
+
+                        if(poczatek != koniec) {
+
+                            long sTime = System.nanoTime();
+                            ff.AlgorytmFFDfs(poczatek, koniec);
+                            long fTime = System.nanoTime();
+                            fTime -= sTime;
+                            tab3[i] = fTime;
+
+                        }
+
+
+                    }
+
+                    zapisz("FordFulkersonListaDFS.txt",tab3);
+                    break;
+
+                case 4:
+                    long[] tab4 = new long[iloscTestow];
+                    System.out.println("Podaj ilosc wierzcholkow: ");
+                    v = scanner.nextInt();
+                    System.out.println("Podaj gestosc: ");
+                    e = scanner.nextInt();
+
+                    for(int i = 0; i < iloscTestow; i++) {
+
+                        ff.losowyGraf(v,e);
+
+                        int poczatek = r.nextInt(v);
+                        int koniec = r.nextInt(v);
+
+                        if(poczatek != koniec) {
+
+                            long sTime = System.nanoTime();
+                            ff.AlgorytmFFMacierzDfs(poczatek, koniec);
+                            long fTime = System.nanoTime();
+                            fTime -= sTime;
+                            tab4[i] = fTime;
+
+                        }
+
+
+                    }
+
+                    zapisz("FordFulkersonMacierzDFS.txt",tab4);
                     break;
 
             }
