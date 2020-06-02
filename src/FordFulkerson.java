@@ -398,8 +398,7 @@ public class FordFulkerson {
             koniec = random.nextInt(v);
         } while(poczatek == koniec);
 
-        //w celu lepszej prezentacji w macierzy incydencji krawedzie nie moga miec wagi 0
-        int waga = random.nextInt(100) + 1;
+        int waga = random.nextInt(100);
 
         //dodanie pierwszej krawedzi
         dodajKrawedz(poczatek, koniec, waga);
@@ -415,7 +414,7 @@ public class FordFulkerson {
 
             poczatek = random.nextInt(v);
             koniec = random.nextInt(v);
-            waga = random.nextInt(100) + 1;
+            waga = random.nextInt(100);
 
             if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec && (spj[poczatek] == true || spj[koniec] == true)) {
                 dodajKrawedz(poczatek, koniec, waga);

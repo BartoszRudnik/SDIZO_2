@@ -78,6 +78,8 @@ public class tDijkstra {
                     dijkstra.AlgorytmDijkstraMacierz(wartosc1,wartosc2);
                     dijkstra.wypiszWynik(wartosc1,wartosc2);
                     System.out.println();
+
+                    dijkstra.wyczysc();
                     break;
 
                 default:

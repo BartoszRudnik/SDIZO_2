@@ -69,9 +69,13 @@ public class tFordFulkerson {
                     System.out.println("Podaj wierzcholek koncowy: ");
                     wartosc2 = scanner.nextInt();
 
+                    ff.wyczysc();
+
                     System.out.println("Algorytm Forda-Fulkersona listowo(BFS):");
                     ff.AlgorytmFFBfs(wartosc1,wartosc2);
                     System.out.println();
+
+                    ff.wyczysc();
 
                     System.out.println("Algorytm Forda-Fulkersona macierzowo(BFS):");
                     ff.AlgorytmFFMacierzBfs(wartosc1,wartosc2);
@@ -88,9 +92,13 @@ public class tFordFulkerson {
                     System.out.println("Podaj wierzcholek koncowy: ");
                     wartosc2 = scanner.nextInt();
 
+                    ff.wyczysc();
+
                     System.out.println("Algorytm Forda-Fulkersona listowo(DFS):");
                     ff.AlgorytmFFDfs(wartosc1,wartosc2);
                     System.out.println();
+
+                    ff.wyczysc();
 
                     System.out.println("Algorytm Forda-Fulkersona macierzowo(DFS):");
                     ff.AlgorytmFFMacierzDfs(wartosc1,wartosc2);

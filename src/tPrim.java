@@ -73,6 +73,8 @@ public class tPrim {
                     prim.AlgorytmPrimaMacierz();
                     prim.wypiszPrim();
                     System.out.println();
+
+                    prim.wyczysc();
                     break;
 
                 default:

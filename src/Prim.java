@@ -280,11 +280,11 @@ public class Prim {
 
             for(int i = 0; i < e; i++){
 
-                if(macierz[pomoc.getWierzcholek()][i] > -1) {
+                if(macierz[pomoc.getWierzcholek()][i] > 0) {
 
                     for (int j = 0; j < v; j++) {
 
-                        if(macierz[j][i] > -1) {
+                        if(macierz[j][i] > 0) {
 
                             if (odwiedzane[j] == false && wierzcholek[j].getWaga() > macierz[j][i]) {
 
@@ -312,8 +312,10 @@ public class Prim {
     public void wypiszPrim(){
 
         for(int i = 1; i < v; i++) {
-            int w = wWaga(mst[i].getWierzcholek(),i);
-            System.out.println("Poczatek: " + i + " " + "Koniec: " + mst[i].getWierzcholek() + "  Waga: " + w);
+            if(mst[i].getWierzcholek() != -1) {
+                int w = wWaga(mst[i].getWierzcholek(), i);
+                System.out.println("Poczatek: " + i + " " + "Koniec: " + mst[i].getWierzcholek() + "  Waga: " + w);
+            }
         }
 
     }

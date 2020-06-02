@@ -51,7 +51,7 @@ public class BellmanFord {
 
         for(int i = 0; i < v; i++){
 
-            wynik[i] = new wierzcholekKolejka(Short.MAX_VALUE,i);
+            wynik[i] = new wierzcholekKolejka(Short.MAX_VALUE/2,i);
             lista[i] = new ArrayList<>();
             spj[i] = false;
 
@@ -84,7 +84,7 @@ public class BellmanFord {
 
         for(int i = 0; i < v; i++){
 
-            wynik[i] = new wierzcholekKolejka(Integer.MAX_VALUE/2,i);
+            wynik[i] = new wierzcholekKolejka(Short.MAX_VALUE/2,i);
 
         }
 
@@ -268,11 +268,11 @@ public class BellmanFord {
 
             for (int i = 0; i < v; i++) {
 
-                for (int j = 0; j < v; j++) {
+                for (int j = 0; j < e; j++) {
 
                     if (macierz[i][j] != 0) {
 
-                        if (wynik[j].getWaga() + Math.abs(macierz[i][j]) < wynik[i].getWaga()) {
+                        if (wynik[j].getWaga() + macierz[i][j] < wynik[i].getWaga()) {
 
                             wynik[i].setWaga(wynik[j].getWaga() + Math.abs(macierz[i][j]));
 
@@ -289,14 +289,12 @@ public class BellmanFord {
         //sprawdzenie czy wystepuja ujemne cykle
         for(int i = 0; i < v; i++) {
 
-            for (int j = 0; j < v; j++) {
+            for (int j = 0; j < e; j++) {
 
                 if(macierz[i][j] != 0) {
 
                     if (wynik[j].getWaga() + Math.abs(macierz[i][j]) < wynik[i].getWaga()) {
-
                         return false;
-
                     }
 
                 }
@@ -354,7 +352,7 @@ public class BellmanFord {
     //funkcja najkrotsza sciezke pomiedzy wierzcholkiem startowym a koncowym
     public void wypisz(int poczatek, int koniec){
 
-        if(wynik[koniec].getWaga() != Short.MAX_VALUE)
+        if(wynik[koniec].getWaga() != Short.MAX_VALUE/2)
             System.out.println("Wierzcholek poczatkowy: " + poczatek + " Wierzcholek koncowy: " + koniec + " Waga najkrotszej sciezki: " + wynik[koniec].getWaga());
         else
             System.out.println("Brak sciezki pomiedzy tymi wierzcholkami");

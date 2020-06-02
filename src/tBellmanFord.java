@@ -70,6 +70,8 @@ public class tBellmanFord {
                     System.out.println("Algorytm Bellmana-Forda listowo:");
                     if(bf.AlgorytmBF(wartosc1,wartosc2) == true)
                         bf.wypisz(wartosc1,wartosc2);
+                    else
+                        System.out.println("Wystapily ujemne cykle");
                     System.out.println();
 
                     bf.wyczysc();
@@ -77,7 +79,12 @@ public class tBellmanFord {
                     System.out.println("Algorytm Bellmana-Forda macierzowo:");
                     if(bf.AlgorytmBFMacierz(wartosc1,wartosc2) == true)
                         bf.wypisz(wartosc1,wartosc2);
+                    else
+                        System.out.println("Wystapily ujemne cykle");
                     System.out.println();
+
+                    bf.wyczysc();
+
                     break;
 
                 default:

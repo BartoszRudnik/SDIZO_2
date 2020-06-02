@@ -128,7 +128,7 @@ public class Dijkstra {
         } while(poczatek == koniec);
 
 
-        int waga = random.nextInt(100) + 1;
+        int waga = random.nextInt(100);
 
         dodajKrawedz(poczatek, koniec, waga);
 
@@ -143,7 +143,7 @@ public class Dijkstra {
 
             poczatek = random.nextInt(v);
             koniec = random.nextInt(v);
-            waga = random.nextInt(100) + 1;
+            waga = random.nextInt(100);
 
             if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec && (spj[poczatek] == true || spj[koniec] == true)) {
                 dodajKrawedz(poczatek, koniec, waga);
@@ -166,7 +166,7 @@ public class Dijkstra {
         lista = new ArrayList[v];
         odwiedzane = new Boolean[v];
         losowe = new Boolean[v][v];
-        macierz = new int[v][v];
+        macierz = new int[v][e];
         spj = new Boolean[v];
 
         check = false;
@@ -185,7 +185,7 @@ public class Dijkstra {
         for(int i = 0; i < v; i++){
 
             lista[i] = new ArrayList<>();
-            wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
+            wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE/2,i);
             odwiedzane[i] = false;
             spj[i] = false;
 
@@ -193,7 +193,7 @@ public class Dijkstra {
 
         for(int i = 0; i < v; i++){
 
-            for(int j = 0; j < v; j++){
+            for(int j = 0; j < e; j++){
 
                 macierz[i][j] = 0;
 
@@ -208,7 +208,7 @@ public class Dijkstra {
 
         for(int i = 0; i < v; i++) {
 
-            wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE, i);
+            wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE/2, i);
             odwiedzane[i] = false;
 
         }
@@ -218,7 +218,7 @@ public class Dijkstra {
     //funkcja wykonujaca relaksacje krawedzi, potrzebna do algorytmu Dijkstry
     private void relax(wierzcholekKolejka u, wierzcholekKolejka adj){
 
-        if(odwiedzane[adj.getWierzcholek()] == false && wierzcholek[adj.getWierzcholek()].getWaga() > wierzcholek[u.getWierzcholek()].getWaga() + adj.getWaga()){
+        if(odwiedzane[adj.getWierzcholek()] == false && wierzcholek[adj.getWierzcholek()].getWaga() >= wierzcholek[u.getWierzcholek()].getWaga() + adj.getWaga()){
 
             kolejka.usun(wierzcholek[adj.getWierzcholek()]);
             wierzcholek[adj.getWierzcholek()].setWaga(u.getWaga() + adj.getWaga());
@@ -238,7 +238,7 @@ public class Dijkstra {
         kolejka = new Kopiec();
 
         //wszystkie wierzcholki dodawane sa do kolejki priorytetowej
-        for(int i = 0; i < e; i++)
+        for(int i = 0; i < v; i++)
             kolejka.dodaj(wierzcholek[i]);
 
         while(kolejka.getRozmiar() > 1){
@@ -252,10 +252,6 @@ public class Dijkstra {
             for(wierzcholekKolejka w : lista[pomoc.getWierzcholek()])
                 relax(pomoc,w);
 
-            //gdy odwiedzony zostanie wierzcholek koncowy algorytm konczy dzialanie
-            if(odwiedzane[koniec] == true)
-                break;
-
         }
 
     }
@@ -268,7 +264,7 @@ public class Dijkstra {
 
         kolejka = new Kopiec();
 
-        for(int i = 0; i < e; i++)
+        for(int i = 0; i < v; i++)
             kolejka.dodaj(wierzcholek[i]);
 
         while(kolejka.getRozmiar() > 1){
@@ -280,11 +276,11 @@ public class Dijkstra {
 
             for(int i = 0; i < e; i++){
 
-                if(macierz[pomoc.getWierzcholek()][i] > -1) {
+                if(macierz[pomoc.getWierzcholek()][i] > 0) {
 
                     for (int j = 0; j < v; j++) {
 
-                        if(macierz[j][i] < -1) {
+                        if(macierz[j][i] < 0) {
 
                             if (odwiedzane[j] == false && wierzcholek[j].getWaga() > Math.abs(macierz[j][i]) + wierzcholek[pomoc.getWierzcholek()].getWaga()) {
 
@@ -317,7 +313,7 @@ public class Dijkstra {
 
         kolejka = new Kopiec();
 
-        for(int i = 0; i < e; i++)
+        for(int i = 0; i < v; i++)
             kolejka.dodaj(wierzcholek[i]);
 
         while(kolejka.getRozmiar() > 1){
@@ -345,7 +341,7 @@ public class Dijkstra {
     //funkcja wypisujaca wynik dzialania algorytmu Dijkstry
     public void wypiszWynik(int poczatek, int koniec){
 
-        if(wierzcholek[koniec].getWaga() != Integer.MAX_VALUE)
+        if(wierzcholek[koniec].getWaga() != Integer.MAX_VALUE/2)
             System.out.println("Wierzcholek poczatkowy: " + poczatek + " Wierzcholek koncowy: "+ koniec  + " Waga najkrotszej sciezki: " + wierzcholek[koniec].getWaga());
         else
             System.out.println("Brak sciezki pomiedzy tymi wierzcholkami");

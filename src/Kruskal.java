@@ -197,7 +197,7 @@ public class Kruskal {
 
             for (int j = 0; j < v; j++) {
 
-                if(macierz[j][i] > -1){
+                if(macierz[j][i] > 0){
 
                     waga = macierz[j][i];
                     tab[pozycja] = j;
