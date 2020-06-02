@@ -23,6 +23,7 @@ public class FordFulkerson {
     private int[][] macierz;
     private int[][] macierz2;
 
+    //konstruktor klasy FordFulkerson
     public FordFulkerson(int v, int e){
 
         this.v = v;
@@ -32,10 +33,12 @@ public class FordFulkerson {
 
     }
 
+    //konstruktor klasy FordFulkerson
     public FordFulkerson(){
 
     }
 
+    //algorytm BFS potrzebny do algorytmu Forda-Fulkersona
     private boolean bfs(int s, int t){
 
         lista = new ArrayList<>();
@@ -74,6 +77,7 @@ public class FordFulkerson {
 
     }
 
+    //algorytm DFS potrzebny do algorytmu Forda-Fulkersona
     private boolean dfs(int s, int t){
 
         lista = new ArrayList<>();
@@ -111,6 +115,7 @@ public class FordFulkerson {
 
     }
 
+    //algorytm BFS dla macierzy
     private boolean bfsMacierz(int s, int t){
 
         lista = new ArrayList<>();
@@ -158,6 +163,7 @@ public class FordFulkerson {
 
     }
 
+    //algorytm DFS dla macierzy
     private boolean dfsMacierz(int s, int t){
 
         lista = new ArrayList<>();
@@ -204,6 +210,7 @@ public class FordFulkerson {
 
     }
 
+    //funkcja dodajaca nowa krawedz do macierzy i listy
     public void dodajKrawedz(int poczatek, int koniec, int waga){
 
         wierzcholekKolejka w = new wierzcholekKolejka(waga,poczatek,koniec);
@@ -225,6 +232,7 @@ public class FordFulkerson {
 
     }
 
+    //funkcja wypisujaca wszystkie krawedzie w postaci listy
     public void wypiszKrawedzieLista(){
 
         if(check == true) {
@@ -251,6 +259,7 @@ public class FordFulkerson {
 
     }
 
+    //funkcja wypisujaca wszystkie wszystkie krawedzie w postaci macierzy
     public void wypiszKrawedzieMacierz(){
 
         if(check == true) {
@@ -278,6 +287,7 @@ public class FordFulkerson {
 
     }
 
+    //funkcja tworzaca i incjalizujaca potrzebne struktury danych
     private void ustaw(){
 
         residual = new ArrayList[v];
@@ -328,6 +338,7 @@ public class FordFulkerson {
 
     }
 
+    //funkcja czyszczaca potrzbne struktury danych w celu ich ponownego uzycia
     public void wyczysc(){
 
         residual = new ArrayList[v];
@@ -368,6 +379,7 @@ public class FordFulkerson {
 
     }
 
+    //funkcja tworzaca losowy graf
     public void losowyGraf(int liczbaWierzcholkow, int gestosc){
 
         v = liczbaWierzcholkow;
@@ -380,21 +392,26 @@ public class FordFulkerson {
 
         Random random = new Random();
 
+        //losowanie bedzie powtorzone jesli wierzcholek koncowy i poczatkowy beda takie same
         do {
             poczatek = random.nextInt(v);
             koniec = random.nextInt(v);
         } while(poczatek == koniec);
 
+        //w celu lepszej prezentacji w macierzy incydencji krawedzie nie moga miec wagi 0
         int waga = random.nextInt(100) + 1;
 
+        //dodanie pierwszej krawedzi
         dodajKrawedz(poczatek, koniec, waga);
 
+        //w celu zachowania spojnosci grafu zaznaczane sa wykorzystane juz wierzcholki i krawedzie
         spj[koniec] = true;
         spj[poczatek] = true;
         losowe[poczatek][koniec] = true;
         losowe[koniec][poczatek] = true;
 
-        for(int i = 0; i < e; i++){
+        //dodanie pozostalych krawedzi
+        for(int i = 0; i < e - 1; i++){
 
             poczatek = random.nextInt(v);
             koniec = random.nextInt(v);
@@ -414,11 +431,13 @@ public class FordFulkerson {
 
     }
 
+    //algorytm Forda-Fulkersona dla listy sasiedztwa wykorzystujacy BFS
     public void AlgorytmFFBfs(int s, int t){
 
         int wynik = 0;
         sciezka = new int[v];
 
+        //wykonujemy dzialania dopoki istnieje sciezka z wierzcholka startowego do koncowego
         while(bfs(s, t) == true){
 
             int przeplyw = Integer.MAX_VALUE;
@@ -430,6 +449,7 @@ public class FordFulkerson {
 
                 tmp2 = sciezka[tmp1];
 
+                //wyznaczenie minimalnej przepustowosci w sciezce
                 if(przeplyw > residual[tmp2].get(tmp1).getWaga())
                     przeplyw = residual[tmp2].get(tmp1).getWaga();
 
@@ -449,6 +469,7 @@ public class FordFulkerson {
                 waga1 -= przeplyw;
                 waga2 += przeplyw;
 
+                //aktualizacja przepustowosci
                 residual[tmp2].get(tmp1).setWaga(waga1);
                 residual[tmp1].get(tmp2).setWaga(waga2);
 
@@ -464,6 +485,7 @@ public class FordFulkerson {
 
     }
 
+    //algorytm Forda-Fulkersona dla listy sasiedztwa z wykorzystaniem DFS
     public void AlgorytmFFDfs(int s, int t){
 
         int wynik = 0;
@@ -514,6 +536,7 @@ public class FordFulkerson {
 
     }
 
+    //algorytm Forda-Fulkersona dla macierzy incydencji z wykorzystaniem BFS
     public void AlgorytmFFMacierzBfs(int s, int t){
 
         int wynik = 0;
@@ -595,6 +618,7 @@ public class FordFulkerson {
 
     }
 
+    //algorytm Forda-Fulkersona dla macierzy incydencji z wykorzystaniem DFS
     public void AlgorytmFFMacierzDfs(int s, int t){
 
         int wynik = 0;
@@ -676,6 +700,7 @@ public class FordFulkerson {
 
     }
 
+    //Funkcja wczytujaca graf z pliku tekstowego
     public void wczytajFF(String nazwaPliku){
 
         try{

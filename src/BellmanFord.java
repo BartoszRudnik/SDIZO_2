@@ -19,21 +19,25 @@ public class BellmanFord {
     private Boolean[] spj;
     private int[][] macierz;
 
+    //konstruktor klasy BellmanFord
     public BellmanFord(int v, int e){
 
         this.v = v;
         this.e = e;
 
+        //funkcja tworzaca i inicjalizujaca struktury danych
         ustaw();
 
     }
 
+    //konstruktor klasy BellmanFord
     public BellmanFord(){
 
         check = false;
 
     }
 
+    //stworzenie i inicjalizacja pozniej wykorzystywanych struktur danych
     private void ustaw(){
 
         wynik = new wierzcholekKolejka[v];
@@ -75,6 +79,7 @@ public class BellmanFord {
 
     }
 
+    //wyczyszczenie struktury zawierajacej wyniki w celu pozniejszego ponownego uzycia
     public void wyczysc(){
 
         for(int i = 0; i < v; i++){
@@ -85,6 +90,7 @@ public class BellmanFord {
 
     }
 
+    //funkcja dodajaca nowa krawedz do listy i macierzy
     public void dodajKrawedz(int poczatek, int koniec, int waga){
 
         wierzcholekKolejka w = new wierzcholekKolejka(waga,poczatek,koniec);
@@ -100,6 +106,7 @@ public class BellmanFord {
 
     }
 
+    //funkcja wyswietlajaca wszystkie krawedzie w formie listy
     public void wypiszKrawedzieLista(){
 
         if(check == true) {
@@ -125,6 +132,7 @@ public class BellmanFord {
 
     }
 
+    //funkcja wyswietlajaca wszystkie krawedzie w formie macierzy
     public void wypiszKrawedzieMacierz(){
 
         if(check == true) {
@@ -152,11 +160,13 @@ public class BellmanFord {
 
     }
 
+    //funkcja tworzaca losowy graf
     public void losowyGraf(int liczbaWierzcholkow, int gestosc){
 
         v = liczbaWierzcholkow;
         e = (v * gestosc) / 100;
 
+        //funkcja inicjalizujaca potrzebne struktury danych
         ustaw();
 
         int poczatek;
@@ -164,23 +174,29 @@ public class BellmanFord {
 
         Random random = new Random();
 
+        //jesli wierzcholek startowy i koncowy beda takie same losowanie zostanie powtorzone
         do {
             poczatek = random.nextInt(v);
             koniec = random.nextInt(v);
         } while(poczatek == koniec);
 
+        //wartosc wag krawedzie losowana z zakresu (-100,100)
         int waga = random.nextInt(200) - 100;
 
+        //w celu lepszej reprezentacji w macierzy Incydencji krawedzie nie moga miec wagi 0
         if(waga == 0)
             waga++;
 
+        //dodanie pierwszej krawedzi
         dodajKrawedz(poczatek, koniec, waga);
 
+        //w celu zachowania spojnosci grafu i unikniecia powtarzania sie krawedzi zaznaczane sa wykorzystane juz wierzcholki i krawedzie
         spj[koniec] = true;
         spj[poczatek] = true;
         losowe[poczatek][koniec] = true;
         losowe[koniec][poczatek] = true;
 
+        //dodanie w petli pozostalych krawedzi
         for(int i = 0; i < e - 1; i++){
 
             poczatek = random.nextInt(v);
@@ -204,10 +220,13 @@ public class BellmanFord {
 
     }
 
+    //algorytm Bellmana-Forda dla listy sasiedztwa
     public Boolean AlgorytmBF(int poczatek, int koniec){
 
+        //wybranie wierzcholka poczatkowego
         wynik[poczatek].setWaga(0);
 
+        //relaksacja krawedzi
         for(int i = 0; i < v; i++){
 
             for(int j = 0; j < lista[i].size(); j++){
@@ -220,6 +239,7 @@ public class BellmanFord {
 
         }
 
+        //sprawdzenie czy wystepuja ujemne cykle
         for(int i = 0; i < v; i++) {
 
             for (int j = 0; j < lista[i].size(); j++) {
@@ -237,10 +257,13 @@ public class BellmanFord {
 
     }
 
+    //algorytm Bellmana-Forda dla macierzy incydencji
     public Boolean AlgorytmBFMacierz(int poczatek, int koniec){
 
+        //wybranie wierzcholka poczatkowego
         wynik[poczatek].setWaga(0);
 
+        //relaksacja krawedzi
         for(int g = 0; g < v - 1; g++) {
 
             for (int i = 0; i < v; i++) {
@@ -263,6 +286,7 @@ public class BellmanFord {
 
         }
 
+        //sprawdzenie czy wystepuja ujemne cykle
         for(int i = 0; i < v; i++) {
 
             for (int j = 0; j < v; j++) {
@@ -285,6 +309,7 @@ public class BellmanFord {
 
     }
 
+    //algorytm Bellmana-Forda bez podawania wierzcholka poczatkowego
     public Boolean AlgorytmBF(){
 
         wynik[0].setWaga(0);
@@ -326,6 +351,7 @@ public class BellmanFord {
 
     }
 
+    //funkcja najkrotsza sciezke pomiedzy wierzcholkiem startowym a koncowym
     public void wypisz(int poczatek, int koniec){
 
         if(wynik[koniec].getWaga() != Short.MAX_VALUE)
@@ -335,6 +361,7 @@ public class BellmanFord {
 
     }
 
+    //funkcja wczytujaca graf z pliku tekstowego
     public void wczytajBF(String nazwaPliku){
 
         try{
@@ -351,6 +378,7 @@ public class BellmanFord {
             v = v1;
             e = e1;
 
+            //inicjalizacja potrzebnych struktur danych
             ustaw();
 
             for (int i = 0; i < e; i++){

@@ -22,10 +22,12 @@ public class Prim {
     private Boolean[] spj;
     int[][] macierz;
 
+    //konstruktor klasy Prim
     public Prim(){
 
     }
 
+    //konstruktor klasy Prim
     public Prim(int v, int e){
 
         this.v = v;
@@ -35,6 +37,7 @@ public class Prim {
 
     }
 
+    //funkcja dodajaca nowa krawedz do macierzy i listy
     public void dodajKrawedz(int poczatek, int koniec, int waga){
 
         wierzcholekKolejka w1 = new wierzcholekKolejka(waga,poczatek);
@@ -54,6 +57,7 @@ public class Prim {
 
     }
 
+    //funkcja tworzaca i inicjalizujaca potrzebne struktury danych
     private void ustaw(){
 
         wierzcholek = new wierzcholekKolejka[v];
@@ -100,6 +104,7 @@ public class Prim {
 
     }
 
+    //funckja czyszczaca struktury danych w celu ich ponownego wykorzystania
     public void wyczysc(){
 
         for(int i = 0; i < v; i++){
@@ -112,6 +117,7 @@ public class Prim {
 
     }
 
+    //funkcja wypisujaca krawedzie w postaci listy
     public void wypiszKrawedzieLista(){
 
         if(index != 0) {
@@ -133,6 +139,7 @@ public class Prim {
 
     }
 
+    //funkcja wypisujaca krawedzie w postaci macierzy
     public void wypiszKrawedzieMacierz(){
 
         if(index > 0) {
@@ -160,6 +167,7 @@ public class Prim {
 
     }
 
+    //funkcja tworzaca losowy graf
     public void losowyGraf(int liczbaWierzcholkow, int gestosc){
 
         v = liczbaWierzcholkow;
@@ -172,21 +180,26 @@ public class Prim {
 
         Random random = new Random();
 
+        //jesli wierzcholek startowy i koncowy beda takie same to losowanie zostanie powtorzone
         do {
             poczatek = random.nextInt(v);
             koniec = random.nextInt(v);
         } while(poczatek == koniec);
 
+        //w celu lepszej reprezentacji macierzy incydencji wagi krawedzie beda wieksze od 0
         int waga = random.nextInt(100) + 1;
 
+        //dodanie pierwszej krawedzi
         dodajKrawedz(poczatek, koniec, waga);
 
+        //w celu zachowania spojnosci tworzonego grafu wykorzystane juz wierzcholki i krawedzie beda zaznaczane
         spj[koniec] = true;
         spj[poczatek] = true;
         losowe[poczatek][koniec] = true;
         losowe[koniec][poczatek] = true;
 
-        for(int i = 0; i < e; i++){
+        //dodanie pozostalych krawedzi
+        for(int i = 0; i < e - 1; i++){
 
             poczatek = random.nextInt(v);
             koniec = random.nextInt(v);
@@ -206,6 +219,7 @@ public class Prim {
 
     }
 
+    //algorytm Prima dla listy sasiedztwa
     public void AlgorytmPrima(){
 
         odwiedzane[0] = true;
@@ -213,9 +227,11 @@ public class Prim {
 
         kolejka = new Kopiec();
 
+        //dodanie wszystkich wierzcholkow do kolejki priorytetowej
         for(int i = 0; i < e; i++)
             kolejka.dodaj(wierzcholek[i]);
 
+        //wykonanie obliczen dopoki w kolejce znajduja sie elementy
         while(kolejka.getRozmiar() > 1){
 
             wierzcholekKolejka pomoc = kolejka.minWierzcholek();
@@ -223,14 +239,17 @@ public class Prim {
 
             odwiedzane[pomoc.getWierzcholek()] = true;
 
+            //dla wszystkich wierzcholkow sasiadujacych z pomoc
             for(wierzcholekKolejka w : lista[pomoc.getWierzcholek()]){
 
                 if(odwiedzane[w.getWierzcholek()] == false && wierzcholek[w.getWierzcholek()].getWaga() > w.getWaga()){
 
                     kolejka.usun(wierzcholek[w.getWierzcholek()]);
+                    //aktualizacja wagi krawedzi
                     wierzcholek[w.getWierzcholek()].setWaga(w.getWaga());
                     kolejka.dodaj(wierzcholek[w.getWierzcholek()]);
 
+                    //dodanie krawedzi do wyniku
                     mst[w.getWierzcholek()] = pomoc;
 
                 }
@@ -241,6 +260,7 @@ public class Prim {
 
     }
 
+    //algorytm Prima dla macierzy incydencji
     public void AlgorytmPrimaMacierz(){
 
         odwiedzane[0] = true;
@@ -288,6 +308,7 @@ public class Prim {
 
     }
 
+    //funkcja wypisujaca wynik algorytmu Prima
     public void wypiszPrim(){
 
         for(int i = 1; i < v; i++) {
@@ -297,6 +318,7 @@ public class Prim {
 
     }
 
+    //funkcja pomocnicza do wypisywania wyniku algorytmu Prima
     private int wWaga(int a, int b){
 
         for(int i = 0; i < lista[a].size(); i++){
@@ -308,6 +330,7 @@ public class Prim {
 
     }
 
+    //funkcja wczytujaca graf z pliku tekstowego
     public void wczytajPrim(String nazwaPliku){
 
         try{

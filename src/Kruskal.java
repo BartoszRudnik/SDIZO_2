@@ -21,6 +21,7 @@ public class Kruskal {
     private Boolean[] spj;
     int[][] macierz;
 
+    //funkcja czyszczaca zawartosc struktury typu wierzcholekKolejka
     private void wyczysc(wierzcholekKolejka[] w){
 
         for(int i = 0; i < w.length; i++){
@@ -29,6 +30,7 @@ public class Kruskal {
 
     }
 
+    //funkcja czyszczaca zawartosc struktury typu Boolean
     private void wyczysc(Boolean[] b){
 
         for(int i = 0; i < v; i++){
@@ -37,6 +39,7 @@ public class Kruskal {
 
     }
 
+    //funkcja czyszczaca zawartosc struktury typu Boolean
     private void wyczysc(Boolean[][] b){
 
         for(int i = 0; i < b.length; i++){
@@ -51,6 +54,7 @@ public class Kruskal {
 
     }
 
+    //funkcja tworzaca i inicjalizujaca potrzebne struktury danych
     private void ustaw(){
 
         wierzcholek = new wierzcholekKolejka[v];
@@ -73,6 +77,7 @@ public class Kruskal {
 
     }
 
+    //konstruktor klasy Kruskal
     public Kruskal(int v, int e){
 
         this.v = v;
@@ -85,10 +90,12 @@ public class Kruskal {
 
     }
 
+    //konstruktor klasy Kruskal
     public Kruskal(){
 
     }
 
+    //funkcja dodajaca nowa krawedz do macierzy i listy
     public void dodajWierzcholek(int poczatek, int koniec, int waga){
 
         wierzcholekKolejka w1 = new wierzcholekKolejka(waga,poczatek,koniec);
@@ -108,6 +115,7 @@ public class Kruskal {
 
     }
 
+    //funkcja tworzaca losowy graf
     public void losowyGraf(int liczbaWierzcholkow, int gestosc){
 
         v = liczbaWierzcholkow;
@@ -129,21 +137,26 @@ public class Kruskal {
 
         Random random = new Random();
 
+        //jesli wierzcholek startowy i koncowy sa takie same losowanie zostanie powtorzone
         do {
             poczatek = random.nextInt(v);
             koniec = random.nextInt(v);
         } while(poczatek == koniec);
 
+        // w celu lepszej prezentacji w macierzy incydencji wagi krawedzi beda wieksze od 0
         int waga = random.nextInt(100) + 1;
 
+        //dodanie pierwszej krawedzi
         dodajWierzcholek(poczatek, koniec, waga);
 
+        // w celu zachowania spojnosci grafu zaznaczane sa wykorzystane juz krawedzie i wierzcholki
         spj[koniec] = true;
         spj[poczatek] = true;
         odwiedzane[poczatek][koniec] = true;
         odwiedzane[koniec][poczatek] = true;
 
-        for(int i = 0; i < e; i++){
+        //dodanie pozostalych krawedzi
+        for(int i = 0; i < e - 1; i++){
 
             poczatek = random.nextInt(v);
             koniec = random.nextInt(v);
@@ -163,6 +176,7 @@ public class Kruskal {
 
     }
 
+    //algorytm Kruskala dla macierzy incydencji
     public void AlgorytmKruskalaMacierz(){
 
         mst = new wierzcholekKolejka[v];
@@ -174,6 +188,7 @@ public class Kruskal {
 
         wyczysc(mst);
 
+        //dodawanie krawedzi do kolejki priorytetowej
         for(int i = 0; i < e; i++) {
 
             int pozycja = 0;
@@ -200,9 +215,11 @@ public class Kruskal {
 
         }
 
+        //tworzenie zbiorow rozlacznych
         for(int i = 0; i < v; i++)
             zr.MakeSet(i);
 
+        //wykonywanie obliczen dopoki w kolejce znajduja sie elementy
         while(kolejka.getRozmiar() > 1){
 
             pomoc = kolejka.minWierzcholek();
@@ -223,6 +240,7 @@ public class Kruskal {
 
     }
 
+    //algorytm Kruskala dla listy sasiedztwa
     public void AlgorytmKruskala(){
 
         mst = new wierzcholekKolejka[v];
@@ -263,6 +281,7 @@ public class Kruskal {
 
     }
 
+    //funkcja wypisujaca wynik algorytmu Kruskala
     public void wypisz(){
 
         for(int i = 0; i < index; i++){
@@ -271,6 +290,7 @@ public class Kruskal {
 
     }
 
+    //funkcja wypisujaca wszystkie krawedzie w postaci listy
     public void wypiszKrawedzieLista(){
 
         if(pozycja > 0) {
@@ -292,6 +312,7 @@ public class Kruskal {
 
     }
 
+    //funkcja wypisujaca wszystkie krawedzie w postaci macierzy
     public void wypiszKrawedzieMacierz(){
 
         if(pozycja > 0) {
@@ -319,6 +340,7 @@ public class Kruskal {
 
     }
 
+    //funkcja wczytujaca graf z pliku tekstowego
     public void wczytajKruskal(String nazwaPliku){
 
         try{

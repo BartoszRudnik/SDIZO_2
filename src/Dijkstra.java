@@ -21,21 +21,25 @@ public class Dijkstra {
     private Boolean[] spj;
     private int[][] macierz;
 
+    //konstruktor klasy Dijkstra
     public Dijkstra(){
 
         check = false;
 
     }
 
+    //konstruktor klasy Dijkstra
     public Dijkstra(int v, int e){
 
         this.v = v;
         this.e = e;
 
+        //inicjalizacja potrzebnych struktur danych
         ustaw();
 
     }
 
+    //dodanie nowej krawedzi do macierzy i listy
     public void dodajKrawedz(int poczatek, int koniec, int waga){
 
         wierzcholekKolejka w1 = new wierzcholekKolejka(waga,koniec);
@@ -50,6 +54,7 @@ public class Dijkstra {
 
     }
 
+    //funkcja wypisujaca wszystkie krawedzie w postaci listy
     public void wypiszKrawedzieLista(){
 
         if(check == true) {
@@ -75,6 +80,7 @@ public class Dijkstra {
 
     }
 
+    //funkcja wypisujaca wszystkie krawedzie w postaci macierzy
     public void wypiszKrawedzieMacierz(){
 
         if(check == true) {
@@ -102,6 +108,7 @@ public class Dijkstra {
 
     }
 
+    //funkcja tworzaca losowy graf
     public void losowyGraf(int liczbaWierzcholkow, int gestosc){
 
         v = liczbaWierzcholkow;
@@ -114,21 +121,25 @@ public class Dijkstra {
 
         Random random = new Random();
 
+        //jesli wierzcholek startowy i koncowy beda takie same losowanie zostanie powtorzone
         do {
             poczatek = random.nextInt(v);
             koniec = random.nextInt(v);
         } while(poczatek == koniec);
 
+
         int waga = random.nextInt(100) + 1;
 
         dodajKrawedz(poczatek, koniec, waga);
 
+        //w celu zachowania spojnosci grafu i unikniecia powtarzania sie krawedzi zaznaczane sa wykorzystane juz wierzcholki i krawedzie
         spj[koniec] = true;
         spj[poczatek] = true;
         losowe[poczatek][koniec] = true;
         losowe[koniec][poczatek] = true;
 
-        for(int i = 0; i < e; i++){
+        //dodanie pozostalych krawedzi
+        for(int i = 0; i < e - 1; i++){
 
             poczatek = random.nextInt(v);
             koniec = random.nextInt(v);
@@ -148,6 +159,7 @@ public class Dijkstra {
 
     }
 
+    //funkcja sluzaca do stworzenia i inicjalizacji potrzebnych struktur danych
     private void ustaw(){
 
         wierzcholek = new wierzcholekKolejka[v];
@@ -191,6 +203,7 @@ public class Dijkstra {
 
     }
 
+    //funkcja czyszczaca potrzebne struktury danych w celu ich ponownego wykorzystania
     public void wyczysc(){
 
         for(int i = 0; i < v; i++) {
@@ -202,6 +215,7 @@ public class Dijkstra {
 
     }
 
+    //funkcja wykonujaca relaksacje krawedzi, potrzebna do algorytmu Dijkstry
     private void relax(wierzcholekKolejka u, wierzcholekKolejka adj){
 
         if(odwiedzane[adj.getWierzcholek()] == false && wierzcholek[adj.getWierzcholek()].getWaga() > wierzcholek[u.getWierzcholek()].getWaga() + adj.getWaga()){
@@ -214,13 +228,16 @@ public class Dijkstra {
 
     }
 
+    //algorytm Dijkstry dla listy sasiedztwa
     public void AlgorytmDijkstra(int poczatek, int  koniec){
 
+        //ustawienie wierzcholka poczatkowego
         odwiedzane[poczatek] = true;
         wierzcholek[poczatek].setWaga(0);
 
         kolejka = new Kopiec();
 
+        //wszystkie wierzcholki dodawane sa do kolejki priorytetowej
         for(int i = 0; i < e; i++)
             kolejka.dodaj(wierzcholek[i]);
 
@@ -231,9 +248,11 @@ public class Dijkstra {
 
             odwiedzane[pomoc.getWierzcholek()] = true;
 
+            //relaksacja krawedzi
             for(wierzcholekKolejka w : lista[pomoc.getWierzcholek()])
                 relax(pomoc,w);
 
+            //gdy odwiedzony zostanie wierzcholek koncowy algorytm konczy dzialanie
             if(odwiedzane[koniec] == true)
                 break;
 
@@ -241,6 +260,7 @@ public class Dijkstra {
 
     }
 
+    //algorytm Dijkstry dla macierzy incydencji
     public void AlgorytmDijkstraMacierz(int poczatek, int  koniec){
 
         odwiedzane[poczatek] = true;
@@ -289,6 +309,7 @@ public class Dijkstra {
 
     }
 
+    //algorytm Dijkstry bez mozliwosci wyboru wierzcholka startowego i koncowego
     public void AlgorytmDijkstra(){
 
         odwiedzane[0] = true;
@@ -321,6 +342,7 @@ public class Dijkstra {
 
     }
 
+    //funkcja wypisujaca wynik dzialania algorytmu Dijkstry
     public void wypiszWynik(int poczatek, int koniec){
 
         if(wierzcholek[koniec].getWaga() != Integer.MAX_VALUE)
@@ -330,6 +352,7 @@ public class Dijkstra {
 
     }
 
+    //funkcja wczytujaca graf z pliku tekstowego
     public void wczytajDijkstra(String nazwaPliku){
 
         try{
