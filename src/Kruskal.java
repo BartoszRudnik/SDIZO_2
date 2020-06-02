@@ -18,12 +18,21 @@ public class Kruskal {
     private ZbiorRozlaczny zr;
     private Kopiec kolejka;
     private Boolean[][] odwiedzane;
+    private Boolean[] spj;
     int[][] macierz;
 
     private void wyczysc(wierzcholekKolejka[] w){
 
         for(int i = 0; i < w.length; i++){
             w[i] = new wierzcholekKolejka();
+        }
+
+    }
+
+    private void wyczysc(Boolean[] b){
+
+        for(int i = 0; i < v; i++){
+            b[i] = false;
         }
 
     }
@@ -44,9 +53,9 @@ public class Kruskal {
 
     private void ustaw(){
 
-        wierzcholek = new wierzcholekKolejka[e];
+        wierzcholek = new wierzcholekKolejka[v];
         lista = new ArrayList[v];
-        macierz = new int[v][e];
+        macierz = new int[v][v];
 
         for(int i = 0; i < v; i++){
             lista[i] = new ArrayList<>();
@@ -54,9 +63,9 @@ public class Kruskal {
 
         for(int i = 0; i < v; i++){
 
-            for(int j = 0; j < e; j++){
+            for(int j = 0; j < v; j++){
 
-                macierz[i][j] = -1;
+                macierz[i][j] = 0;
 
             }
 
@@ -105,30 +114,50 @@ public class Kruskal {
         e = (v * gestosc) / 100;
 
         odwiedzane = new Boolean[v][v];
+        spj = new Boolean[v];
 
         ustaw();
 
         pozycja = 0;
 
         wyczysc(wierzcholek);
+        wyczysc(spj);
         wyczysc(odwiedzane);
+
+        int poczatek;
+        int koniec;
 
         Random random = new Random();
 
+        do {
+            poczatek = random.nextInt(v);
+            koniec = random.nextInt(v);
+        } while(poczatek == koniec);
+
+        int waga = random.nextInt(100) + 1;
+
+        dodajWierzcholek(poczatek, koniec, waga);
+
+        spj[koniec] = true;
+        spj[poczatek] = true;
+        odwiedzane[poczatek][koniec] = true;
+        odwiedzane[koniec][poczatek] = true;
+
         for(int i = 0; i < e; i++){
 
-            int poczatek = random.nextInt(v);
-            int koniec = random.nextInt(v);
-            int waga = random.nextInt(100);
+            poczatek = random.nextInt(v);
+            koniec = random.nextInt(v);
+            waga = random.nextInt(100) + 1;
 
-            if(odwiedzane[poczatek][koniec] == false && odwiedzane[koniec][poczatek] == false && poczatek != koniec) {
+            if(odwiedzane[poczatek][koniec] == false && odwiedzane[koniec][poczatek] == false && poczatek != koniec && (spj[poczatek] == true || spj[koniec] == true)) {
                 dodajWierzcholek(poczatek, koniec, waga);
+                odwiedzane[poczatek][koniec] = true;
+                odwiedzane[koniec][poczatek] = true;
+                spj[koniec] = true;
+                spj[poczatek] = true;
             }
             else
                 i--;
-
-            odwiedzane[poczatek][koniec] = true;
-            odwiedzane[koniec][poczatek] = true;
 
         }
 
@@ -273,7 +302,7 @@ public class Kruskal {
 
                 for (int j = 0; j < e; j++) {
 
-                    System.out.print(macierz[i][j] + "    ");
+                    System.out.print(macierz[i][j] + "      ");
 
                 }
 

@@ -16,6 +16,7 @@ public class BellmanFord {
     private ArrayList<wierzcholekKolejka>[] lista;
     private wierzcholekKolejka[] wynik;
     private Boolean[][] losowe;
+    private Boolean[] spj;
     private int[][] macierz;
 
     public BellmanFord(int v, int e){
@@ -37,6 +38,7 @@ public class BellmanFord {
 
         wynik = new wierzcholekKolejka[v];
         losowe = new Boolean[v][v];
+        spj = new Boolean[v];
         lista = new ArrayList[v];
         macierz = new int[v][e];
 
@@ -47,6 +49,7 @@ public class BellmanFord {
 
             wynik[i] = new wierzcholekKolejka(Short.MAX_VALUE,i);
             lista[i] = new ArrayList<>();
+            spj[i] = false;
 
         }
 
@@ -156,22 +159,46 @@ public class BellmanFord {
 
         ustaw();
 
+        int poczatek;
+        int koniec;
+
         Random random = new Random();
 
-        for(int i = 0; i < e; i++){
+        do {
+            poczatek = random.nextInt(v);
+            koniec = random.nextInt(v);
+        } while(poczatek == koniec);
 
-            int poczatek = random.nextInt(v);
-            int koniec = random.nextInt(v);
-            int waga = random.nextInt(200) - 100;
+        int waga = random.nextInt(200) - 100;
 
-            if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec) {
+        if(waga == 0)
+            waga++;
+
+        dodajKrawedz(poczatek, koniec, waga);
+
+        spj[koniec] = true;
+        spj[poczatek] = true;
+        losowe[poczatek][koniec] = true;
+        losowe[koniec][poczatek] = true;
+
+        for(int i = 0; i < e - 1; i++){
+
+            poczatek = random.nextInt(v);
+            koniec = random.nextInt(v);
+            waga = random.nextInt(200) - 100;
+
+            if(waga == 0)
+                waga++;
+
+            if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec && (spj[poczatek] == true || spj[koniec] == true)) {
                 dodajKrawedz(poczatek, koniec, waga);
+                losowe[poczatek][koniec] = true;
+                losowe[koniec][poczatek] = true;
+                spj[koniec] = true;
+                spj[poczatek] = true;
             }
             else
                 i--;
-
-            losowe[poczatek][koniec] = true;
-            losowe[koniec][poczatek] = true;
 
         }
 

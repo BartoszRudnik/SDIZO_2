@@ -19,6 +19,7 @@ public class Prim {
     private wierzcholekKolejka[] mst;
     private wierzcholekKolejka[] wszystkie;
     private Boolean[][] losowe;
+    private Boolean[] spj;
     int[][] macierz;
 
     public Prim(){
@@ -61,6 +62,7 @@ public class Prim {
         mst = new wierzcholekKolejka[v];
         wszystkie = new wierzcholekKolejka[v];
         losowe = new Boolean[v][v];
+        spj = new Boolean[v];
         macierz = new int[v][e];
 
         index = 0;
@@ -80,6 +82,7 @@ public class Prim {
             mst[i] = new wierzcholekKolejka(-1,-1);
             wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
             odwiedzane[i] = false;
+            spj[i] = false;
             wszystkie[i] = new wierzcholekKolejka();
             lista[i] = new ArrayList<>();
 
@@ -89,7 +92,7 @@ public class Prim {
 
             for(int j = 0; j < e; j++){
 
-                macierz[i][j] = -1;
+                macierz[i][j] = 0;
 
             }
 
@@ -164,22 +167,40 @@ public class Prim {
 
         ustaw();
 
+        int poczatek;
+        int koniec;
+
         Random random = new Random();
+
+        do {
+            poczatek = random.nextInt(v);
+            koniec = random.nextInt(v);
+        } while(poczatek == koniec);
+
+        int waga = random.nextInt(100) + 1;
+
+        dodajKrawedz(poczatek, koniec, waga);
+
+        spj[koniec] = true;
+        spj[poczatek] = true;
+        losowe[poczatek][koniec] = true;
+        losowe[koniec][poczatek] = true;
 
         for(int i = 0; i < e; i++){
 
-            int poczatek = random.nextInt(v);
-            int koniec = random.nextInt(v);
-            int waga = random.nextInt(100);
+            poczatek = random.nextInt(v);
+            koniec = random.nextInt(v);
+            waga = random.nextInt(100) + 1;
 
-            if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec) {
+            if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec && (spj[poczatek] == true || spj[koniec] == true)) {
                 dodajKrawedz(poczatek, koniec, waga);
+                losowe[poczatek][koniec] = true;
+                losowe[koniec][poczatek] = true;
+                spj[koniec] = true;
+                spj[poczatek] = true;
             }
             else
                 i--;
-
-            losowe[poczatek][koniec] = true;
-            losowe[koniec][poczatek] = true;
 
         }
 

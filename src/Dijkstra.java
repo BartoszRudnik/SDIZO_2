@@ -18,6 +18,7 @@ public class Dijkstra {
     private Boolean[] odwiedzane;
     private Kopiec kolejka;
     private Boolean[][] losowe;
+    private Boolean[] spj;
     private int[][] macierz;
 
     public Dijkstra(){
@@ -108,22 +109,40 @@ public class Dijkstra {
 
         ustaw();
 
+        int poczatek;
+        int koniec;
+
         Random random = new Random();
+
+        do {
+            poczatek = random.nextInt(v);
+            koniec = random.nextInt(v);
+        } while(poczatek == koniec);
+
+        int waga = random.nextInt(100) + 1;
+
+        dodajKrawedz(poczatek, koniec, waga);
+
+        spj[koniec] = true;
+        spj[poczatek] = true;
+        losowe[poczatek][koniec] = true;
+        losowe[koniec][poczatek] = true;
 
         for(int i = 0; i < e; i++){
 
-            int poczatek = random.nextInt(v);
-            int koniec = random.nextInt(v);
-            int waga = random.nextInt(100);
+            poczatek = random.nextInt(v);
+            koniec = random.nextInt(v);
+            waga = random.nextInt(100) + 1;
 
-            if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec) {
+            if(losowe[poczatek][koniec] == false && losowe[koniec][poczatek] == false && poczatek != koniec && (spj[poczatek] == true || spj[koniec] == true)) {
                 dodajKrawedz(poczatek, koniec, waga);
+                losowe[poczatek][koniec] = true;
+                losowe[koniec][poczatek] = true;
+                spj[koniec] = true;
+                spj[poczatek] = true;
             }
             else
                 i--;
-
-            losowe[poczatek][koniec] = true;
-            losowe[koniec][poczatek] = true;
 
         }
 
@@ -135,7 +154,8 @@ public class Dijkstra {
         lista = new ArrayList[v];
         odwiedzane = new Boolean[v];
         losowe = new Boolean[v][v];
-        macierz = new int[v][e];
+        macierz = new int[v][v];
+        spj = new Boolean[v];
 
         check = false;
         index = 0;
@@ -155,14 +175,15 @@ public class Dijkstra {
             lista[i] = new ArrayList<>();
             wierzcholek[i] = new wierzcholekKolejka(Integer.MAX_VALUE,i);
             odwiedzane[i] = false;
+            spj[i] = false;
 
         }
 
         for(int i = 0; i < v; i++){
 
-            for(int j = 0; j < e; j++){
+            for(int j = 0; j < v; j++){
 
-                macierz[i][j] = -1;
+                macierz[i][j] = 0;
 
             }
 

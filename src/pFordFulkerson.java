@@ -46,6 +46,10 @@ public class pFordFulkerson {
                     v = scanner.nextInt();
                     System.out.println("Podaj gestosc: ");
                     e = scanner.nextInt();
+                    if(e > 100 || e < 0){
+                        System.out.println("Podano zla wartosc");
+                        break;
+                    }
 
                     for(int i = 0; i < iloscTestow; i++){
 
@@ -75,6 +79,10 @@ public class pFordFulkerson {
                     v = scanner.nextInt();
                     System.out.println("Podaj gestosc: ");
                     e = scanner.nextInt();
+                    if(e > 100 || e < 0){
+                        System.out.println("Podano zla wartosc");
+                        break;
+                    }
 
                     for(int i = 0; i < iloscTestow; i++) {
 
@@ -105,6 +113,10 @@ public class pFordFulkerson {
                     v = scanner.nextInt();
                     System.out.println("Podaj gestosc: ");
                     e = scanner.nextInt();
+                    if(e > 100 || e < 0){
+                        System.out.println("Podano zla wartosc");
+                        break;
+                    }
 
                     for(int i = 0; i < iloscTestow; i++) {
 
@@ -135,6 +147,10 @@ public class pFordFulkerson {
                     v = scanner.nextInt();
                     System.out.println("Podaj gestosc: ");
                     e = scanner.nextInt();
+                    if(e > 100 || e < 0){
+                        System.out.println("Podano zla wartosc");
+                        break;
+                    }
 
                     for(int i = 0; i < iloscTestow; i++) {
 

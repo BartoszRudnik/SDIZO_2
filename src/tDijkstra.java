@@ -46,6 +46,10 @@ public class tDijkstra {
                     wartosc1 = scanner.nextInt();
                     System.out.println("Podaj gestosc(liczba calkowita z zakresu 0-100): ");
                     wartosc2 = scanner.nextInt();
+                    if(wartosc2 > 100 || wartosc2 < 0){
+                        System.out.println("Podano zla wartosc");
+                        break;
+                    }
                     dijkstra.losowyGraf(wartosc1,wartosc2);
                     System.out.println();
                     break;
