@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SDIZO_2:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/SDIZO_2_jar2</output-path>
+    <root id="archive" name="SDIZO_2.jar">
+      <element id="module-output" name="SDIZO_2" />
+      <element id="library" level="project" name="src" />
+    </root>
+  </artifact>
+</component>
